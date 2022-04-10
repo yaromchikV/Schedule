@@ -12,14 +12,32 @@ import com.yaromchikv.data.models.entity.GroupEntity
 import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
+import com.yaromchikv.data.models.views.GroupView
 import com.yaromchikv.data.models.views.LessonView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ScheduleDao {
 
-    @Query("SELECT * FROM LessonView")
-    fun getLessons(): Flow<List<LessonView>>
+    @Query(
+        "SELECT lessons.id, subject, type, note, start_time, end_time, week_number, subgroup, " +
+                "(teachers.surname || ' ' || substr(teachers.name, 1, 1) || '. ' || substr(teachers.patronymic, 1, 1) || '.') as teacher, (classrooms.number || '-' || buildings.name) as classroom_name " +
+                "FROM lessons " +
+                "JOIN groups ON groups.id = group_id " +
+                "JOIN teachers ON teachers.id = teacher_id " +
+                "JOIN classrooms ON classrooms.id = classroom_id " +
+                "JOIN buildings ON buildings.id = classrooms.building_id " +
+                "JOIN days ON days.id = day_of_week_id " +
+                "WHERE day_of_week_id = :dayIndex"
+    )
+    fun getLessons(dayIndex: Int): Flow<List<LessonView>>
+
+    @Query(
+        "SELECT groups.id, groups.name, specialities.name as speciality " +
+                "FROM groups " +
+                "JOIN specialities ON specialities.id = groups.speciality_id"
+    )
+    fun getGroups(): Flow<List<GroupView>>
 
     @Query("SELECT * FROM days")
     fun getDaysOfWeek(): Flow<List<DayOfWeekEntity>>

@@ -32,19 +32,19 @@ class DataGenerator {
 
         fun generateClassrooms(): List<ClassroomEntity> {
             val list = mutableListOf<ClassroomEntity>()
-            list.add(ClassroomEntity(name = "610", buildingId = 1))
+            list.add(ClassroomEntity(number = "610", buildingId = 1))
             return list
         }
 
         fun generateFaculties(): List<FacultyEntity> {
             val list = mutableListOf<FacultyEntity>()
-            list.add(FacultyEntity(name = "Факультет Компь..", abbrev = "ФКП"))
+            list.add(FacultyEntity(name = "ФКП"))
             return list
         }
 
         fun generateSpecialities(): List<SpecialityEntity> {
             val list = mutableListOf<SpecialityEntity>()
-            list.add(SpecialityEntity(name = "Ипоит", abbrev = "ИПОИТ", facultyId = 1))
+            list.add(SpecialityEntity(name = "ИПОИТ", facultyId = 1))
             return list
         }
 
@@ -58,9 +58,9 @@ class DataGenerator {
             val list = mutableListOf<TeacherEntity>()
             list.add(
                 TeacherEntity(
-                    lastName = "Яромчик",
-                    firstName = "Владислав",
-                    middleName = "Александрович",
+                    surname = "Яромчик",
+                    name = "Владислав",
+                    patronymic = "Александрович",
                     rank = "доцент"
                 )
             )
@@ -78,24 +78,39 @@ class DataGenerator {
                     endTime = "11:50",
                     type = "ПЗ",
                     subject = "УИП",
-                    note = null,
+                    note = "Примечание",
                     groupId = 1,
-                    numSubgroup = null,
+                    subgroup = 0,
                     teacherId = 1
                 )
             )
             list.add(
                 LessonEntity(
-                    dayOfWeekId = 1,
+                    dayOfWeekId = 3,
+                    classroomId = 1,
+                    weekNumbers = "01234",
+                    startTime = "15:30",
+                    endTime = "19:50",
+                    type = "ЛК",
+                    subject = "ИНИС",
+                    note = null,
+                    groupId = 1,
+                    subgroup = 2,
+                    teacherId = 1
+                )
+            )
+            list.add(
+                LessonEntity(
+                    dayOfWeekId = 2,
                     classroomId = 1,
                     weekNumbers = "12",
                     startTime = "12:30",
                     endTime = "14:50",
                     type = "ЛР",
-                    subject = "УИП",
+                    subject = "ТВР",
                     note = null,
                     groupId = 1,
-                    numSubgroup = null,
+                    subgroup = 1,
                     teacherId = 1
                 )
             )

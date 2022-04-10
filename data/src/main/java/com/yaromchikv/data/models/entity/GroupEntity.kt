@@ -1,11 +1,9 @@
 package com.yaromchikv.data.models.entity
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 @Entity(
     tableName = "groups",
@@ -22,5 +20,5 @@ import kotlinx.parcelize.Parcelize
 data class GroupEntity(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "speciality_id") val specialityId: Int
+    @ColumnInfo(name = "speciality_id", index = true) val specialityId: Int
 )

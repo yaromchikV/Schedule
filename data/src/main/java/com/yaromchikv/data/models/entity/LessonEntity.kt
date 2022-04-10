@@ -40,15 +40,15 @@ import androidx.room.PrimaryKey
 )
 data class LessonEntity(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
-    @ColumnInfo(name = "day_of_week_id") val dayOfWeekId: Int,
-    @ColumnInfo(name = "classroom_id") val classroomId: Int,
+    @ColumnInfo(name = "day_of_week_id", index = true) val dayOfWeekId: Int,
+    @ColumnInfo(name = "classroom_id", index = true) val classroomId: Int?,
     @ColumnInfo(name = "week_number") val weekNumbers: String,
     @ColumnInfo(name = "start_time") val startTime: String,
     @ColumnInfo(name = "end_time") val endTime: String,
     @ColumnInfo(name = "type") val type: String,
     @ColumnInfo(name = "subject") val subject: String,
     @ColumnInfo(name = "note") val note: String?,
-    @ColumnInfo(name = "group_id") val groupId: Int,
-    @ColumnInfo(name = "subgroup_num") val numSubgroup: String?,
-    @ColumnInfo(name = "teacher_id") val teacherId: Int
+    @ColumnInfo(name = "group_id", index = true) val groupId: Int,
+    @ColumnInfo(name = "subgroup") val subgroup: Int,
+    @ColumnInfo(name = "teacher_id", index = true) val teacherId: Int?
 )

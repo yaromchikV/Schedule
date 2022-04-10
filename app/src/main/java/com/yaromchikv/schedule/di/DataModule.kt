@@ -16,6 +16,7 @@ import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.util.DataGenerator
 import java.util.concurrent.Executors
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -49,7 +50,7 @@ val dataModule = module {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 Executors.newSingleThreadExecutor().execute {
-                    runBlocking {
+                    runBlocking(Dispatchers.IO) {
                         val dao = (get() as ScheduleDatabase).scheduleDao
                         dao.insertListOfDaysOfWeek(DataGenerator.generateDaysOfWeek())
                         dao.insertListOfBuildings(DataGenerator.generateBuildings())

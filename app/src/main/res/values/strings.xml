@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Schedule</string>
+
+    <string name="group_name">%s (%s)</string>
+    <string name="lesson_name">%s (%s)</string>
+    <string name="weeks_enum">неделя: %s</string>
+    <string name="teacher_text">%s (подгр. %d)</string>
+
+    <string name="empty_day">В этот день нет занятий</string>
 </resources>

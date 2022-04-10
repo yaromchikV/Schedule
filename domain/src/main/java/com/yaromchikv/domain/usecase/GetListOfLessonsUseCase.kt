@@ -11,10 +11,8 @@ class GetListOfLessonsUseCase(
     private val repository: ScheduleRepository,
     private val mapper: DomainMapper<LessonInterface, LessonModel>
 ) {
-    operator fun invoke(): Flow<List<LessonModel>> {
-        val dataFlow = repository.getLessons()
-        return dataFlow.map {
-            mapper.toDomainList(it)
-        }
+    operator fun invoke(dayIndex: Int): Flow<List<LessonModel>> {
+        val dataFlow = repository.getLessons(dayIndex)
+        return dataFlow.map { mapper.toDomainList(it) }
     }
 }

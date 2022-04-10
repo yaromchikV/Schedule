@@ -13,10 +13,10 @@ class LessonMapper : DomainMapper<LessonView, LessonModel> {
             note = domainModel.note,
             startTime = domainModel.startTime,
             endTime = domainModel.endTime,
-            weeks = domainModel.weekNumber.joinToString(separator = ""),
-            subgroupNum = domainModel.subgroupNum?.joinToString(separator = ""),
+            weeks = domainModel.weeks?.joinToString(separator = ""),
+            subgroup = domainModel.subgroup,
             teacher = domainModel.teacher,
-            classroomName = domainModel.classroom
+            classroom = domainModel.classroom
         )
     }
 
@@ -28,10 +28,10 @@ class LessonMapper : DomainMapper<LessonView, LessonModel> {
             note = entity.note,
             startTime = entity.startTime,
             endTime = entity.endTime,
-            weekNumber = entity.weeks.toList().map { it.digitToInt() },
-            subgroupNum = entity.subgroupNum?.toList()?.map { it.digitToInt() },
+            weeks = entity.weeks?.toList()?.map { it.digitToInt() },
+            subgroup = entity.subgroup,
             teacher = entity.teacher,
-            classroom = entity.classroomName
+            classroom = entity.classroom
         )
     }
 

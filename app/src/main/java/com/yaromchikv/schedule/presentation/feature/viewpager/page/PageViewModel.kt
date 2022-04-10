@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class PageViewModel(
+    private val dayIndex: Int,
     private val getListOfLessonsUseCase: GetListOfLessonsUseCase
 ) : ViewModel() {
 
@@ -34,7 +35,7 @@ class PageViewModel(
 
     private fun getLessons() {
         getLessonsJob?.cancel()
-        getLessonsJob = getListOfLessonsUseCase()
+        getLessonsJob = getListOfLessonsUseCase(dayIndex)
             .onEach { lessons -> _subjects.value = lessons }
             .launchIn(viewModelScope)
     }

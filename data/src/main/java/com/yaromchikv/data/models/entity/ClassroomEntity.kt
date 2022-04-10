@@ -1,11 +1,9 @@
 package com.yaromchikv.data.models.entity
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 @Entity(
     tableName = "classrooms",
@@ -21,6 +19,6 @@ import kotlinx.parcelize.Parcelize
 )
 data class ClassroomEntity(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "building_id") val buildingId: Int
+    @ColumnInfo(name = "number") val number: String,
+    @ColumnInfo(name = "building_id", index = true) val buildingId: Int
 )

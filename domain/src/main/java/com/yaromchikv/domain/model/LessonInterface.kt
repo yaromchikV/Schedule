@@ -7,8 +7,8 @@ interface LessonInterface {
     val note: String?
     val startTime: String
     val endTime: String
-    val weeks: String
-    val subgroupNum: String?
-    val teacher: String
-    val classroomName: String
+    val weeks: String?
+    val subgroup: Int
+    val teacher: String?
+    val classroom: String?
 }

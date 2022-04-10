@@ -7,8 +7,8 @@ data class LessonModel(
     val note: String?,
     val startTime: String,
     val endTime: String,
-    val weekNumber: List<Int>,
-    val subgroupNum: List<Int>?,
-    val teacher: String,
+    val weeks: List<Int>?,
+    val subgroup: Int,
+    val teacher: String?,
     val classroom: String
 )
