@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    single<SharedPreferences> { PreferenceManager.getDefaultSharedPreferences(get()) }
+    factory<SharedPreferences> { PreferenceManager.getDefaultSharedPreferences(get()) }
 
     viewModel { MainViewModel(preferences = get(), getListOfGroupsUseCase = get()) }
 

@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
 
@@ -50,13 +49,15 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    mainViewModel.groups.collectLatest {
-                        it?.let {
-                            groupsAdapter.submitList(it)
-                        }
-                    }
-                }
+                launch { observeGroups() }
+            }
+        }
+    }
+
+    private suspend fun observeGroups() {
+        mainViewModel.groups.collectLatest {
+            it?.let {
+                groupsAdapter.submitList(it)
             }
         }
     }

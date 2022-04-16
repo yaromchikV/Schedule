@@ -2,7 +2,7 @@ package com.yaromchikv.schedule.presentation.feature.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yaromchikv.domain.model.DayOfWeekInterface
+import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.usecase.GetListOfDaysOfWeekUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,8 +17,8 @@ class ScheduleViewModel(
     private val getListOfDaysOfWeekUseCase: GetListOfDaysOfWeekUseCase
 ) : ViewModel() {
 
-    private val _daysOfWeek = MutableStateFlow<List<DayOfWeekInterface>>(emptyList())
-    val daysOfWeek: StateFlow<List<DayOfWeekInterface>> = _daysOfWeek
+    private val _daysOfWeek = MutableStateFlow<List<DayOfWeekModel>>(emptyList())
+    val daysOfWeek: StateFlow<List<DayOfWeekModel>> = _daysOfWeek
 
     private val _events = MutableSharedFlow<Event>()
     val events: SharedFlow<Event> = _events

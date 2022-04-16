@@ -2,28 +2,37 @@ package com.yaromchikv.data.repository
 
 import com.yaromchikv.data.api.ScheduleApi
 import com.yaromchikv.data.db.ScheduleDao
-import com.yaromchikv.domain.model.DayOfWeekInterface
-import com.yaromchikv.domain.model.GroupInterface
+import com.yaromchikv.data.mapper.DayOfWeekMapper
+import com.yaromchikv.data.mapper.GroupMapper
+import com.yaromchikv.data.mapper.LessonMapper
+import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.GroupModel
-import com.yaromchikv.domain.model.LessonInterface
+import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ScheduleRepositoryImpl(
     private val api: ScheduleApi,
-    private val dao: ScheduleDao
+    private val dao: ScheduleDao,
+    private val lessonMapper: LessonMapper,
+    private val groupMapper: GroupMapper,
+    private val dayOfWeekMapper: DayOfWeekMapper
 ) : ScheduleRepository {
 
-    override fun getLessons(dayIndex: Int, groupName: String): Flow<List<LessonInterface>> {
-        return dao.getLessonsByDay(dayIndex, groupName)
+    override fun getLessons(dayIndex: Int, groupName: String): Flow<List<LessonModel>> {
+        val dataFlow = dao.getLessonsByDay(dayIndex, groupName)
+        return dataFlow.map { lessonMapper.mapToLessonModelList(it) }
     }
 
-    override fun getDaysOfWeek(): Flow<List<DayOfWeekInterface>> {
-        return dao.getDaysOfWeek()
+    override fun getDaysOfWeek(): Flow<List<DayOfWeekModel>> {
+        val dataFlow = dao.getDaysOfWeek()
+        return dataFlow.map { dayOfWeekMapper.mapToDayOfWeekModelList(it) }
     }
 
-    override fun getGroups(): Flow<List<GroupInterface>> {
-        return dao.getGroups()
+    override fun getGroups(): Flow<List<GroupModel>> {
+        val dataFlow = dao.getGroups()
+        return dataFlow.map { groupMapper.mapFromGroupModelList(it) }
     }
 
     override fun getIdByUsername(username: String): Flow<Int?> {

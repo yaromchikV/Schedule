@@ -7,15 +7,10 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.yaromchikv.data.api.ScheduleApi
 import com.yaromchikv.data.db.ScheduleDatabase
+import com.yaromchikv.data.mapper.DayOfWeekMapper
 import com.yaromchikv.data.mapper.GroupMapper
 import com.yaromchikv.data.mapper.LessonMapper
-import com.yaromchikv.data.models.views.GroupView
-import com.yaromchikv.data.models.views.LessonView
 import com.yaromchikv.data.repository.ScheduleRepositoryImpl
-import com.yaromchikv.domain.common.GroupMapperInterface
-import com.yaromchikv.domain.common.LessonMapperInterface
-import com.yaromchikv.domain.model.GroupModel
-import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.util.DataGenerator
 import java.util.concurrent.Executors
@@ -73,9 +68,19 @@ val dataModule = module {
 
     single { get<ScheduleDatabase>().scheduleDao }
 
-    single<ScheduleRepository> { ScheduleRepositoryImpl(api = get(), dao = get()) }
+    single<ScheduleRepository> {
+        ScheduleRepositoryImpl(
+            api = get(),
+            dao = get(),
+            lessonMapper = get(),
+            groupMapper = get(),
+            dayOfWeekMapper = get()
+        )
+    }
 
-    factory<LessonMapperInterface<LessonView, LessonModel>> { LessonMapper() }
+    factory { LessonMapper() }
 
-    factory<GroupMapperInterface<GroupView, GroupModel>> { GroupMapper() }
+    factory { GroupMapper() }
+
+    factory { DayOfWeekMapper() }
 }

@@ -74,23 +74,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    loginViewModel.access.collectLatest { rights ->
-                        when (rights) {
-                            is LoginViewModel.AccessState.Granted -> {
-                                mainViewModel.accessRights = rights.accessRights
-                                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToScheduleFragment())
-                            }
-                            is LoginViewModel.AccessState.Denied -> {
-                                binding.passwordTextField.editText?.setText("")
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.user_not_found),
+                loginViewModel.access.collectLatest { rights ->
+                    when (rights) {
+                        is LoginViewModel.AccessState.Granted -> {
+                            mainViewModel.accessRights = rights.accessRights
+                            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToScheduleFragment())
+                        }
+                        is LoginViewModel.AccessState.Denied -> {
+                            binding.passwordTextField.editText?.setText("")
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.user_not_found),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
-                            else -> Unit
-                        }
+                        else -> Unit
                     }
                 }
             }

@@ -9,17 +9,17 @@ import com.yaromchikv.schedule.databinding.ItemGroupBinding
 
 class GroupsAdapter : ListAdapter<GroupModel, GroupViewHolder>(DiffCallback) {
 
-    private var onItemClickListener: ((GroupModel) -> Unit) = {}
-    fun setOnItemClickListener(listener: (GroupModel) -> Unit) {
-        onItemClickListener = listener
-    }
-
     companion object DiffCallback : DiffUtil.ItemCallback<GroupModel>() {
         override fun areItemsTheSame(oldItem: GroupModel, newItem: GroupModel) =
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: GroupModel, newItem: GroupModel) =
             oldItem == newItem
+    }
+
+    private var onItemClickListener: ((GroupModel) -> Unit) = {}
+    fun setOnItemClickListener(listener: (GroupModel) -> Unit) {
+        onItemClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {

@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
 
-    factory { GetListOfLessonsUseCase(repository = get(), mapper = get()) }
+    factory { GetListOfLessonsUseCase(repository = get()) }
 
     factory { GetListOfDaysOfWeekUseCase(repository = get()) }
 
@@ -20,5 +20,5 @@ val domainModule = module {
 
     factory { GetHashPasswordUseCase() }
 
-    factory { GetListOfGroupsUseCase(repository = get(), mapper = get()) }
+    factory { GetListOfGroupsUseCase(repository = get()) }
 }

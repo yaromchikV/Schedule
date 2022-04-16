@@ -75,21 +75,25 @@ class PageFragment : Fragment(R.layout.fragment_page) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    scheduleViewModel.daysOfWeek.collectLatest {
-                        binding.dayOfWeek.text =
-                            pageViewModel.getCurrentDayName(it, currentFragmentIndex)
-                    }
-                }
-                launch {
-                    pageViewModel.lessons.collectLatest {
-                        it?.let {
-                            binding.noLesson.visibility =
-                                if (it.isEmpty()) View.VISIBLE else View.GONE
-                            scheduleAdapter.submitList(it)
-                        }
-                    }
-                }
+                launch { observeDaysOfWeek() }
+                launch { observeLessons() }
+            }
+        }
+    }
+
+    private suspend fun observeDaysOfWeek() {
+        scheduleViewModel.daysOfWeek.collectLatest {
+            binding.dayOfWeek.text =
+                pageViewModel.getCurrentDayName(it, currentFragmentIndex)
+        }
+    }
+
+    private suspend fun observeLessons() {
+        pageViewModel.lessons.collectLatest {
+            it?.let {
+                binding.noLesson.visibility =
+                    if (it.isEmpty()) View.VISIBLE else View.GONE
+                scheduleAdapter.submitList(it)
             }
         }
     }

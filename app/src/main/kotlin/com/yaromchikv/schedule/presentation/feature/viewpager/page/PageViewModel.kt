@@ -3,7 +3,7 @@ package com.yaromchikv.schedule.presentation.feature.viewpager.page
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yaromchikv.domain.model.DayOfWeekInterface
+import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.usecase.GetListOfLessonsUseCase
 import com.yaromchikv.schedule.presentation.common.GROUP_NAME_PREFS_KEY
@@ -48,7 +48,7 @@ class PageViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun getCurrentDayName(list: List<DayOfWeekInterface>, index: Int?): String {
+    fun getCurrentDayName(list: List<DayOfWeekModel>, index: Int?): String {
         return list.find { day ->
             day.id == index?.plus(1)
         }?.name ?: ""

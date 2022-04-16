@@ -1,11 +1,10 @@
 package com.yaromchikv.data.mapper
 
 import com.yaromchikv.data.models.views.LessonView
-import com.yaromchikv.domain.common.LessonMapperInterface
 import com.yaromchikv.domain.model.LessonModel
 
-class LessonMapper : LessonMapperInterface<LessonView, LessonModel> {
-    override fun mapToEntity(model: LessonModel): LessonView {
+class LessonMapper {
+    fun mapToLessonView(model: LessonModel): LessonView {
         return LessonView(
             id = model.id,
             subject = model.subject,
@@ -20,7 +19,7 @@ class LessonMapper : LessonMapperInterface<LessonView, LessonModel> {
         )
     }
 
-    override fun mapFromEntity(entity: LessonView): LessonModel {
+    fun mapToLessonModel(entity: LessonView): LessonModel {
         return LessonModel(
             id = entity.id,
             subject = entity.subject,
@@ -35,11 +34,11 @@ class LessonMapper : LessonMapperInterface<LessonView, LessonModel> {
         )
     }
 
-    override fun mapToEntityList(list: List<LessonModel>): List<LessonView> {
-        return list.map { mapToEntity(it) }
+    fun mapToLessonViewList(list: List<LessonModel>): List<LessonView> {
+        return list.map { mapToLessonView(it) }
     }
 
-    override fun mapFromEntityList(list: List<LessonView>): List<LessonModel> {
-        return list.map { mapFromEntity(it) }
+    fun mapToLessonModelList(list: List<LessonView>): List<LessonModel> {
+        return list.map { mapToLessonModel(it) }
     }
 }
