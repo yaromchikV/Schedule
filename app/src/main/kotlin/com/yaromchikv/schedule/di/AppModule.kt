@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.yaromchikv.schedule.presentation.MainViewModel
 import com.yaromchikv.schedule.presentation.feature.change_group_menu.GroupsAdapter
+import com.yaromchikv.schedule.presentation.feature.editing.EditLessonViewModel
 import com.yaromchikv.schedule.presentation.feature.login.LoginViewModel
 import com.yaromchikv.schedule.presentation.feature.schedule.ScheduleViewModel
 import com.yaromchikv.schedule.presentation.feature.viewpager.page.PageViewModel
@@ -30,6 +31,14 @@ val appModule = module {
     }
 
     viewModel { LoginViewModel(getIdByUsernameUseCase = get(), getAccessPermissionUseCase = get()) }
+
+    viewModel { parameters ->
+        EditLessonViewModel(
+            lessonId = parameters.get(),
+            getLessonByIdUseCase = get(),
+            updateLessonUseCase = get()
+        )
+    }
 
     factory { ScheduleAdapter() }
 

@@ -25,7 +25,7 @@ private const val BASE_URL = "https://iis.bsuir.by/"
 
 val dataModule = module {
 
-    single<Moshi> {
+    factory<Moshi> {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
@@ -59,6 +59,7 @@ val dataModule = module {
                         dao.insertListOfSpecialities(DataGenerator.generateSpecialities())
                         dao.insertListOfGroups(DataGenerator.generateGroups())
                         dao.insertListOfTeachers(DataGenerator.generateTeachers())
+                        dao.insertListOfLessonTypes(DataGenerator.generateLessonTypes())
                         dao.insertListOfLessons(DataGenerator.generateLessons())
                     }
                 }
@@ -66,7 +67,7 @@ val dataModule = module {
         }).build()
     }
 
-    single { get<ScheduleDatabase>().scheduleDao }
+    factory { get<ScheduleDatabase>().scheduleDao }
 
     single<ScheduleRepository> {
         ScheduleRepositoryImpl(

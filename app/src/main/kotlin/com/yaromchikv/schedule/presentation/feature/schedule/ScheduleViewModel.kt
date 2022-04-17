@@ -48,7 +48,14 @@ class ScheduleViewModel(
         }
     }
 
+    fun editLessonClick(lessonId: Int) {
+        viewModelScope.launch {
+            _events.emit(Event.SelectLesson(lessonId))
+        }
+    }
+
     sealed class Event {
         data class ChangeFragment(val index: Int) : Event()
+        data class SelectLesson(val lessonId: Int): Event()
     }
 }

@@ -17,6 +17,11 @@ class ScheduleAdapter : ListAdapter<LessonModel, SubjectViewHolder>(DiffCallback
             oldItem == newItem
     }
 
+    private var onItemClickListener: ((LessonModel) -> Unit) = {}
+    fun setOnItemClickListener(listener: (LessonModel) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemLessonBinding.inflate(layoutInflater, parent, false)
@@ -25,5 +30,6 @@ class ScheduleAdapter : ListAdapter<LessonModel, SubjectViewHolder>(DiffCallback
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener { onItemClickListener(getItem(position)) }
     }
 }

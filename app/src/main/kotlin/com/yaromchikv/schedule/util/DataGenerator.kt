@@ -9,6 +9,7 @@ import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.RoleEntity
 import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
+import com.yaromchikv.data.models.entity.TypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
 import com.yaromchikv.domain.usecase.GetHashPasswordUseCase
 
@@ -104,16 +105,24 @@ class DataGenerator {
             return list
         }
 
+        fun generateLessonTypes(): List<TypeEntity> {
+            val list = mutableListOf<TypeEntity>()
+            list.add(TypeEntity(type = "ЛК"))
+            list.add(TypeEntity(type = "ПЗ"))
+            list.add(TypeEntity(type = "ЛР"))
+            return list
+        }
+
         fun generateLessons(): List<LessonEntity> {
             val list = mutableListOf<LessonEntity>()
             list.add(
                 LessonEntity(
                     dayOfWeekId = 1,
                     classroomId = 1,
-                    weekNumbers = "24",
+                    weeks = "24",
                     startTime = "10:30",
                     endTime = "11:50",
-                    type = "ПЗ",
+                    typeId = 1,
                     subject = "УИП",
                     note = "Примечание",
                     groupId = 1,
@@ -125,10 +134,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 3,
                     classroomId = 1,
-                    weekNumbers = "01234",
+                    weeks = "01234",
                     startTime = "15:30",
                     endTime = "19:50",
-                    type = "ЛК",
+                    typeId = 2,
                     subject = "ИНИС",
                     note = null,
                     groupId = 1,
@@ -140,10 +149,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 4,
                     classroomId = 1,
-                    weekNumbers = "12",
+                    weeks = "12",
                     startTime = "12:30",
                     endTime = "14:50",
-                    type = "ЛР",
+                    typeId = 1,
                     subject = "ТВР",
                     note = null,
                     groupId = 1,
@@ -157,10 +166,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 5,
                     classroomId = 1,
-                    weekNumbers = "24",
+                    weeks = "24",
                     startTime = "10:30",
                     endTime = "11:50",
-                    type = "ПЗ",
+                    typeId = 3,
                     subject = "ЙЙЙ",
                     note = null,
                     groupId = 2,
@@ -172,10 +181,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 2,
                     classroomId = 1,
-                    weekNumbers = "01234",
+                    weeks = "01234",
                     startTime = "15:30",
                     endTime = "19:50",
-                    type = "ЛК",
+                    typeId = 1,
                     subject = "ЙФЯ",
                     note = null,
                     groupId = 2,
@@ -187,10 +196,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 6,
                     classroomId = 1,
-                    weekNumbers = "12",
+                    weeks = "12",
                     startTime = "12:30",
                     endTime = "14:50",
-                    type = "ЛР",
+                    typeId = 2,
                     subject = "МСА",
                     note = "Примечание",
                     groupId = 2,
@@ -203,10 +212,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 1,
                     classroomId = 1,
-                    weekNumbers = "24",
+                    weeks = "24",
                     startTime = "10:30",
                     endTime = "11:50",
-                    type = "ПЗ",
+                    typeId = 3,
                     subject = "ЩЩЩ",
                     note = null,
                     groupId = 3,
@@ -218,10 +227,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 4,
                     classroomId = 1,
-                    weekNumbers = "01234",
+                    weeks = "01234",
                     startTime = "15:30",
                     endTime = "19:50",
-                    type = "ЛК",
+                    typeId = 2,
                     subject = "ЫД",
                     note = "опвофл",
                     groupId = 3,
@@ -233,10 +242,10 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 4,
                     classroomId = 1,
-                    weekNumbers = "12",
+                    weeks = "12",
                     startTime = "12:30",
                     endTime = "14:50",
-                    type = "ЛР",
+                    typeId = 2,
                     subject = "ИАЛА",
                     note = null,
                     groupId = 3,

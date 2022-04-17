@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.usecase.GetListOfLessonsUseCase
-import com.yaromchikv.schedule.presentation.common.GROUP_NAME_PREFS_KEY
+import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +23,8 @@ class PageViewModel(
     val lessons: StateFlow<List<LessonModel>?> = _lessons
 
     private val preferenceListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-            if (key == GROUP_NAME_PREFS_KEY) {
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == GROUP_ID_PREFS_KEY) {
                 getLessons()
             }
         }
@@ -37,14 +37,11 @@ class PageViewModel(
     }
 
     private fun getLessons() {
-        // Hardcoded value '910903' will be fixed later
-        val groupName = preferences.getString(GROUP_NAME_PREFS_KEY, "910903") ?: "910903"
+        val groupId = preferences.getInt(GROUP_ID_PREFS_KEY, 1)
 
         getLessonsJob?.cancel()
-        getLessonsJob = getListOfLessonsUseCase(dayIndex + 1, groupName)
-            .onEach { lessons ->
-                _lessons.value = lessons
-            }
+        getLessonsJob = getListOfLessonsUseCase(dayIndex + 1, groupId)
+            .onEach { lessons -> _lessons.value = lessons }
             .launchIn(viewModelScope)
     }
 

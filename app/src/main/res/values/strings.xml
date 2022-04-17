@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Schedule</string>
 
+    <string name="schedules">Расписания</string>
+
     <string name="group_name">%s (%s)</string>
     <string name="lesson_name">%s (%s)</string>
     <string name="weeks_enum">неделя: %s</string>
@@ -13,5 +15,23 @@
     <string name="user_not_found">Пользователь не найден</string>
     <string name="input_login">Введите логин</string>
     <string name="input_password">Введите пароль</string>
-    <string name="schedules">Расписания</string>
+
+    <string name="editing">Редактирование</string>
+    <string name="subject">Дисциплина</string>
+    <string name="lesson_type">Тип занятия</string>
+    <string name="classroom">Аудитория</string>
+    <string name="teacher">Преподаватель</string>
+    <string name="begin_time">Время начала</string>
+    <string name="end_time">Время конца</string>
+    <string name="day_of_week">День недели</string>
+    <string name="weeks">Недели</string>
+    <string name="subgroup">Подгруппа</string>
+    <string name="note">Примечание</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="both">Общее</string>
+    <string name="delete">Удалить</string>
+
 </resources>

@@ -20,11 +20,18 @@
         android:id="@+id/scheduleFragment"
         android:name="com.yaromchikv.schedule.presentation.feature.schedule.ScheduleFragment"
         android:label="ScheduleFragment"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_scheduleFragment_to_changeGroupFragment"
             app:destination="@id/changeGroupFragment"
             app:enterAnim="@anim/slide_from_bottom_to_top"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_scheduleFragment_to_editLessonFragment"
+            app:destination="@id/editLessonFragment"
+            app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
@@ -34,5 +41,14 @@
         android:name="com.yaromchikv.schedule.presentation.feature.change_group_menu.ChangeGroupFragment"
         android:label="ChangeGroupFragment"
         tools:layout="@layout/fragment_change_group" />
+    <fragment
+        android:id="@+id/editLessonFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.editing.EditLessonFragment"
+        android:label="EditLessonFragment"
+        tools:layout="@layout/fragment_edit_lesson">
+        <argument
+            android:name="selectedLessonId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

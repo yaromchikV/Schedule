@@ -70,6 +70,10 @@ class PageFragment : Fragment(R.layout.fragment_page) {
             adapter = scheduleAdapter
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
+
+        scheduleAdapter.setOnItemClickListener {
+            scheduleViewModel.editLessonClick(it.id)
+        }
     }
 
     private fun setupObservers() {

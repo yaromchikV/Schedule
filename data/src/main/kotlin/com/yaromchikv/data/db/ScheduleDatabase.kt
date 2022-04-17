@@ -11,7 +11,10 @@ import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.RoleEntity
 import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
+import com.yaromchikv.data.models.entity.TypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
+import com.yaromchikv.data.models.views.GroupView
+import com.yaromchikv.data.models.views.LessonView
 
 @Database(
     entities = [
@@ -24,7 +27,12 @@ import com.yaromchikv.data.models.entity.UserEntity
         FacultyEntity::class,
         SpecialityEntity::class,
         GroupEntity::class,
+        TypeEntity::class,
         LessonEntity::class
+    ],
+    views = [
+        GroupView::class,
+        LessonView::class
     ],
     version = 1,
     exportSchema = true

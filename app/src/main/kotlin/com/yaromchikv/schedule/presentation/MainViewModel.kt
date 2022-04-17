@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.GroupModel
 import com.yaromchikv.domain.usecase.GetListOfGroupsUseCase
 import com.yaromchikv.schedule.presentation.common.AccessRights
-import com.yaromchikv.schedule.presentation.common.GROUP_NAME_PREFS_KEY
+import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,22 +38,26 @@ class MainViewModel(
         getGroupsJob = getListOfGroupsUseCase()
             .onEach { groups ->
                 _groups.value = groups
-                setGroupModel()
+                updateSelectedGroup()
             }
             .launchIn(viewModelScope)
     }
 
-    private fun setGroupModel() {
+    private fun updateSelectedGroup() {
         _selectedGroup.value = _groups.value?.find {
-            // Hardcoded value '910903' will be fixed later
-            it.name == preferences.getString(GROUP_NAME_PREFS_KEY, "910903") ?: "910903"
+            it.id == preferences.getInt(GROUP_ID_PREFS_KEY, 1)
+        }?.apply {
+            isSelected = true
         }
     }
+
 
     fun selectGroupClick(group: GroupModel) {
         viewModelScope.launch {
             _selectedGroup.value = group
-            preferences.edit().putString(GROUP_NAME_PREFS_KEY, _selectedGroup.value?.name).apply()
+            _groups.value?.map { it.isSelected = it.id == group.id }
+
+            preferences.edit().putInt(GROUP_ID_PREFS_KEY, _selectedGroup.value?.id ?: 1).apply()
         }
     }
 }

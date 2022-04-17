@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.yaromchikv.data.models.entity.BuildingEntity
 import com.yaromchikv.data.models.entity.ClassroomEntity
 import com.yaromchikv.data.models.entity.DayOfWeekEntity
@@ -13,6 +14,7 @@ import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.RoleEntity
 import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
+import com.yaromchikv.data.models.entity.TypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
 import com.yaromchikv.data.models.views.GroupView
 import com.yaromchikv.data.models.views.LessonView
@@ -21,24 +23,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ScheduleDao {
 
-    @Query(
-        "SELECT lessons.id, subject, type, note, start_time, end_time, week_number, subgroup, " +
-                "(teachers.surname || ' ' || substr(teachers.name, 1, 1) || '. ' || substr(teachers.patronymic, 1, 1) || '.') as teacher, (classrooms.number || '-' || buildings.name) as classroom_name " +
-                "FROM lessons " +
-                "JOIN groups ON groups.id = group_id " +
-                "JOIN teachers ON teachers.id = teacher_id " +
-                "JOIN classrooms ON classrooms.id = classroom_id " +
-                "JOIN buildings ON buildings.id = classrooms.building_id " +
-                "JOIN days ON days.id = day_of_week_id " +
-                "WHERE day_of_week_id = :dayIndex AND groups.name = :groupName"
-    )
-    fun getLessonsByDay(dayIndex: Int, groupName: String): Flow<List<LessonView>>
+    @Query("SELECT * FROM LessonView WHERE day_id = :dayIndex AND group_id = :groupId")
+    fun getLessonsByDay(dayIndex: Int, groupId: Int): Flow<List<LessonView>>
 
-    @Query(
-        "SELECT groups.id, groups.name, specialities.name as speciality " +
-                "FROM groups " +
-                "JOIN specialities ON specialities.id = groups.speciality_id"
-    )
+    @Query("SELECT * FROM LessonView WHERE id = :id")
+    fun getLessonById(id: Int): Flow<LessonView>
+
+    @Query("SELECT * FROM GroupView")
     fun getGroups(): Flow<List<GroupView>>
 
     @Query("SELECT * FROM days")
@@ -55,6 +46,8 @@ interface ScheduleDao {
     )
     fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?>
 
+    @Update
+    suspend fun updateLesson(lessonEntity: LessonEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfRoles(list: List<RoleEntity>)
@@ -82,6 +75,9 @@ interface ScheduleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfTeachers(list: List<TeacherEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertListOfLessonTypes(list: List<TypeEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfLessons(list: List<LessonEntity>)

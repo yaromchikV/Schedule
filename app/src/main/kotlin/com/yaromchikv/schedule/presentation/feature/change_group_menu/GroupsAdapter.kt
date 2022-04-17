@@ -1,5 +1,6 @@
 package com.yaromchikv.schedule.presentation.feature.change_group_menu
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -28,7 +29,14 @@ class GroupsAdapter : ListAdapter<GroupModel, GroupViewHolder>(DiffCallback) {
         return GroupViewHolder(binding)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        val groupModel = getItem(position)
+
+        holder.bind(groupModel)
+        holder.itemView.setOnClickListener {
+            notifyDataSetChanged()
+            onItemClickListener(groupModel)
+        }
     }
 }

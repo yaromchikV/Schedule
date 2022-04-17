@@ -49,7 +49,7 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch { observeGroups() }
+                observeGroups()
             }
         }
     }

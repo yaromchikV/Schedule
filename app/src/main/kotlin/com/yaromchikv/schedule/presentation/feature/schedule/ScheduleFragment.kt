@@ -24,7 +24,8 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
     private val mainViewModel by sharedViewModel<MainViewModel>()
     private val scheduleViewModel by viewModel<ScheduleViewModel>()
-    private val offScreen = 2
+
+    private val viewPagerOffScreenValue = 2
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,8 +46,8 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private fun setupViewPager() {
         binding.viewPager.apply {
             adapter = ViewPagerAdapter(this@ScheduleFragment)
-            currentItem = LocalDate.now().dayOfWeek.ordinal - 1
-            offscreenPageLimit = offScreen
+            offscreenPageLimit = viewPagerOffScreenValue
+            setCurrentItem(LocalDate.now().dayOfWeek.ordinal - 1, false)
         }
     }
 
@@ -70,7 +71,19 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
     private suspend fun observeEvents() {
         scheduleViewModel.events.collectLatest {
-            binding.viewPager.currentItem = (it as ScheduleViewModel.Event.ChangeFragment).index
+            when (it) {
+                is ScheduleViewModel.Event.ChangeFragment -> {
+                    binding.viewPager.currentItem = it.index
+                }
+                is ScheduleViewModel.Event.SelectLesson -> {
+                    findNavController().navigate(
+                        ScheduleFragmentDirections.actionScheduleFragmentToEditLessonFragment(
+                            it.lessonId
+                        )
+                    )
+                }
+            }
         }
     }
+
 }

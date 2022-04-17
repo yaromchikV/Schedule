@@ -20,10 +20,6 @@ class GroupMapper {
         )
     }
 
-    fun mapToGroupViewList(list: List<GroupModel>): List<GroupView> {
-        return list.map { mapToGroupView(it) }
-    }
-
     fun mapFromGroupModelList(list: List<GroupView>): List<GroupModel> {
         return list.map { mapToGroupModel(it) }
     }

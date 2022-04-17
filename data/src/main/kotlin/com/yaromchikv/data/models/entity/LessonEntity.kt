@@ -35,6 +35,13 @@ import androidx.room.PrimaryKey
             childColumns = ["teacher_id"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = TypeEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["type_id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -42,10 +49,10 @@ data class LessonEntity(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
     @ColumnInfo(name = "day_of_week_id", index = true) val dayOfWeekId: Int,
     @ColumnInfo(name = "classroom_id", index = true) val classroomId: Int?,
-    @ColumnInfo(name = "week_number") val weekNumbers: String,
+    @ColumnInfo(name = "week_number") val weeks: String,
     @ColumnInfo(name = "start_time") val startTime: String,
     @ColumnInfo(name = "end_time") val endTime: String,
-    @ColumnInfo(name = "type") val type: String,
+    @ColumnInfo(name = "type_id", index = true) val typeId: Int,
     @ColumnInfo(name = "subject") val subject: String,
     @ColumnInfo(name = "note") val note: String?,
     @ColumnInfo(name = "group_id", index = true) val groupId: Int,

@@ -33,40 +33,39 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun setupTextChangedListeners() {
-        binding.usernameTextField.let {
-            it.editText?.doAfterTextChanged { text ->
+        with(binding) {
+            usernameEditText.doAfterTextChanged { text ->
                 loginViewModel.username = text.toString()
-                it.error = null
+                usernameTextField.error = null
             }
-        }
-        binding.passwordTextField.let {
-            it.editText?.doAfterTextChanged { text ->
+
+            passwordEditText.doAfterTextChanged { text ->
                 loginViewModel.password = text.toString()
-                it.error = null
+                passwordTextField.error = null
             }
+
         }
     }
 
     private fun setupButtonClickListener() {
-        binding.loginButton.setOnClickListener {
-//            loginViewModel.username = "admin"
-//            loginViewModel.password = "admin"
-//            loginViewModel.getAccessPermission()
-
-            binding.usernameTextField.let {
-                if (it.editText?.text?.isBlank() == true) {
-                    it.error = getString(R.string.input_login)
-                }
-            }
-            binding.passwordTextField.let {
-                if (it.editText?.text?.isBlank() == true) {
-                    it.error = getString(R.string.input_password)
-                }
-            }
-            if (binding.usernameTextField.editText?.text?.isNotBlank() == true &&
-                binding.passwordTextField.editText?.text?.isNotBlank() == true
-            ) {
+        with(binding) {
+            loginButton.setOnClickListener {
+                loginViewModel.username = "admin"
+                loginViewModel.password = "admin"
                 loginViewModel.getAccessPermission()
+
+//                if (usernameEditText.text?.isBlank() == true) {
+//                    usernameTextField.error = getString(R.string.input_login)
+//                }
+//                if (passwordEditText.text?.isBlank() == true) {
+//                    passwordTextField.error = getString(R.string.input_password)
+//                }
+//
+//                if (usernameEditText.text?.isNotBlank() == true &&
+//                    passwordEditText.text?.isNotBlank() == true
+//                ) {
+//                    loginViewModel.getAccessPermission()
+//                }
             }
         }
     }
@@ -85,9 +84,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             Toast.makeText(
                                 requireContext(),
                                 getString(R.string.user_not_found),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                         else -> Unit
                     }
                 }

@@ -20,10 +20,6 @@ class DayOfWeekMapper {
         )
     }
 
-    fun mapToDayOfWeekEntityList(list: List<DayOfWeekModel>): List<DayOfWeekEntity> {
-        return list.map { mapToDayOfWeekEntity(it) }
-    }
-
     fun mapToDayOfWeekModelList(list: List<DayOfWeekEntity>): List<DayOfWeekModel> {
         return list.map { mapToDayOfWeekModel(it) }
     }
