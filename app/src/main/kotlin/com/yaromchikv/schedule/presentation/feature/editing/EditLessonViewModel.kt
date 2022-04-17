@@ -3,6 +3,7 @@ package com.yaromchikv.schedule.presentation.feature.editing
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.LessonModel
+import com.yaromchikv.domain.usecase.DeleteLessonUseCase
 import com.yaromchikv.domain.usecase.GetLessonByIdUseCase
 import com.yaromchikv.domain.usecase.UpdateLessonUseCase
 import kotlinx.coroutines.Job
@@ -16,7 +17,8 @@ import timber.log.Timber
 class EditLessonViewModel(
     private val lessonId: Int,
     private val getLessonByIdUseCase: GetLessonByIdUseCase,
-    private val updateLessonUseCase: UpdateLessonUseCase
+    private val updateLessonUseCase: UpdateLessonUseCase,
+    private val deleteLessonUseCase: DeleteLessonUseCase
 ) : ViewModel() {
 
     private val _lesson = MutableStateFlow<LessonModel?>(null)
@@ -38,6 +40,12 @@ class EditLessonViewModel(
     fun applyChangesClick(lessonModel: LessonModel) {
         viewModelScope.launch {
             updateLessonUseCase(lessonModel)
+        }
+    }
+
+    fun deleteButtonClick() {
+        viewModelScope.launch {
+            _lesson.value?.let { deleteLessonUseCase(it) }
         }
     }
 }

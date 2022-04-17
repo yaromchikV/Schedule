@@ -33,5 +33,8 @@
     <string name="four">4</string>
     <string name="both">Общее</string>
     <string name="delete">Удалить</string>
+    <string name="delete_alert_title">Вы действительно хотите удалить это занятие?</string>
+    <string name="delete_alert_message">Отменить это действие будет невозможно</string>
+    <string name="yes">Да</string>
 
 </resources>

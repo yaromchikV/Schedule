@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 class PageViewModel(
     private val dayIndex: Int,
@@ -41,7 +42,10 @@ class PageViewModel(
 
         getLessonsJob?.cancel()
         getLessonsJob = getListOfLessonsUseCase(dayIndex + 1, groupId)
-            .onEach { lessons -> _lessons.value = lessons }
+            .onEach { lessons ->
+                Timber.i("day: ${dayIndex}; ${if (lessons.isNotEmpty()) lessons.toString() else "EMPTY"}")
+                _lessons.value = lessons
+            }
             .launchIn(viewModelScope)
     }
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
     fun getLessons(dayIndex: Int, groupId: Int): Flow<List<LessonModel>>
-    fun getLessonById(id: Int): Flow<LessonModel>
+    fun getLessonById(id: Int): Flow<LessonModel?>
     fun getDaysOfWeek(): Flow<List<DayOfWeekModel>>
     fun getGroups(): Flow<List<GroupModel>>
 
@@ -15,4 +15,5 @@ interface ScheduleRepository {
     fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?>
 
     suspend fun updateLesson(lessonModel: LessonModel)
+    suspend fun deleteLesson(lessonModel: LessonModel)
 }

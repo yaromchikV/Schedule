@@ -1,6 +1,7 @@
 package com.yaromchikv.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -27,7 +28,7 @@ interface ScheduleDao {
     fun getLessonsByDay(dayIndex: Int, groupId: Int): Flow<List<LessonView>>
 
     @Query("SELECT * FROM LessonView WHERE id = :id")
-    fun getLessonById(id: Int): Flow<LessonView>
+    fun getLessonById(id: Int): Flow<LessonView?>
 
     @Query("SELECT * FROM GroupView")
     fun getGroups(): Flow<List<GroupView>>
@@ -48,6 +49,9 @@ interface ScheduleDao {
 
     @Update
     suspend fun updateLesson(lessonEntity: LessonEntity)
+
+    @Delete
+    suspend fun deleteLesson(lessonEntity: LessonEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfRoles(list: List<RoleEntity>)

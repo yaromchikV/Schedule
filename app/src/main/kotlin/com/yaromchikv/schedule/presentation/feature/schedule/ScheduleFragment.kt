@@ -25,8 +25,6 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private val mainViewModel by sharedViewModel<MainViewModel>()
     private val scheduleViewModel by viewModel<ScheduleViewModel>()
 
-    private val viewPagerOffScreenValue = 2
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
@@ -46,7 +44,6 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private fun setupViewPager() {
         binding.viewPager.apply {
             adapter = ViewPagerAdapter(this@ScheduleFragment)
-            offscreenPageLimit = viewPagerOffScreenValue
             setCurrentItem(LocalDate.now().dayOfWeek.ordinal - 1, false)
         }
     }

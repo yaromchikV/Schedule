@@ -36,7 +36,8 @@ val appModule = module {
         EditLessonViewModel(
             lessonId = parameters.get(),
             getLessonByIdUseCase = get(),
-            updateLessonUseCase = get()
+            updateLessonUseCase = get(),
+            deleteLessonUseCase = get()
         )
     }
 

@@ -25,9 +25,13 @@ class ScheduleRepositoryImpl(
         return dataFlow.map { lessonMapper.mapToLessonModelList(it) }
     }
 
-    override fun getLessonById(id: Int): Flow<LessonModel> {
+    override fun getLessonById(id: Int): Flow<LessonModel?> {
         val dataFlow = dao.getLessonById(id)
-        return dataFlow.map { lessonMapper.mapToLessonModel(it) }
+        return dataFlow.map {
+            if (it != null) {
+                lessonMapper.mapToLessonModel(it)
+            } else null
+        }
     }
 
     override fun getDaysOfWeek(): Flow<List<DayOfWeekModel>> {
@@ -43,6 +47,11 @@ class ScheduleRepositoryImpl(
     override suspend fun updateLesson(lessonModel: LessonModel) {
         val lessonEntity = lessonMapper.mapToLessonEntity(lessonModel)
         dao.updateLesson(lessonEntity)
+    }
+
+    override suspend fun deleteLesson(lessonModel: LessonModel) {
+        val lessonEntity = lessonMapper.mapToLessonEntity(lessonModel)
+        dao.deleteLesson(lessonEntity)
     }
 
     override fun getIdByUsername(username: String): Flow<Int?> {

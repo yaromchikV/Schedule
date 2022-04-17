@@ -19,13 +19,13 @@ class SubjectViewHolder(private val binding: ItemLessonBinding) :
             teacher.text = getTeacherText(lesson)
             note.text = lesson.note
 
-            note.visibility = if (lesson.note != null) View.VISIBLE else View.GONE
+            note.visibility = if (!lesson.note.isNullOrBlank()) View.VISIBLE else View.GONE
         }
     }
 
     private fun getWeeksText(lesson: LessonModel): String {
-        val weeksList = lesson.weeks?.toMutableList()
-        return if (weeksList?.contains(0) == false) {
+        val weeksList = lesson.weeks.toMutableList()
+        return if (!weeksList.contains(0)) {
             binding.root.context.getString(
                 R.string.weeks_enum,
                 weeksList.joinToString(separator = ", ")

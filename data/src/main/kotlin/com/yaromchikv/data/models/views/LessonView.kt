@@ -27,7 +27,7 @@ data class LessonView(
     @ColumnInfo(name = "end_time") val endTime: String,
     @ColumnInfo(name = "day_id") val dayOfWeekId: Int,
     @ColumnInfo(name = "day_name") val dayOfWeek: String,
-    @ColumnInfo(name = "week_number") val weeks: String?,
+    @ColumnInfo(name = "week_number") val weeks: String,
     @ColumnInfo(name = "subgroup") val subgroup: Int,
     @ColumnInfo(name = "teacher_id") val teacherId: Int?,
     @ColumnInfo(name = "teacher") val teacher: String?,

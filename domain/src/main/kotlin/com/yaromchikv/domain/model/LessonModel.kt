@@ -10,7 +10,7 @@ data class LessonModel(
     val endTime: String,
     val dayOfWeekId: Int,
     val dayOfWeek: String,
-    val weeks: List<Int>?,
+    val weeks: List<Int>,
     val subgroup: Int,
     val teacherId: Int?,
     val teacher: String?,

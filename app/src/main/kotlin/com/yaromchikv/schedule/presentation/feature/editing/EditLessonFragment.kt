@@ -2,6 +2,7 @@ package com.yaromchikv.schedule.presentation.feature.editing
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -44,8 +45,22 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                 applyButtonClick()
                 findNavController().navigateUp()
             }
+            deleteCard.setOnClickListener {
+                showDeleteAlertDialog {
+                    findNavController().navigateUp()
+                    editLessonViewModel.deleteButtonClick()
+                }
+            }
         }
     }
+
+    private fun showDeleteAlertDialog(action: () -> Unit) = AlertDialog.Builder(requireContext())
+        .setIcon(R.drawable.ic_warning)
+        .setTitle(getString(R.string.delete_alert_title))
+        .setMessage(getString(R.string.delete_alert_message))
+        .setPositiveButton(getString(R.string.yes)) { _, _ -> action() }
+        .create()
+        .show()
 
     private fun applyButtonClick() {
         with(binding) {
@@ -102,7 +117,7 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                     dayOfWeekText.text = lesson.dayOfWeek
                     noteText.setText(lesson.note)
 
-                    lesson.weeks?.let {
+                    lesson.weeks.let {
                         week1.isChecked = it.contains(1)
                         week2.isChecked = it.contains(2)
                         week3.isChecked = it.contains(3)
