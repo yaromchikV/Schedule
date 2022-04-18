@@ -7,16 +7,14 @@ class DayOfWeekMapper {
     fun mapToDayOfWeekEntity(model: DayOfWeekModel): DayOfWeekEntity {
         return DayOfWeekEntity(
             id = model.id,
-            name = model.name,
-            abbrev = model.abbrev
+            name = model.name
         )
     }
 
     fun mapToDayOfWeekModel(entity: DayOfWeekEntity): DayOfWeekModel {
         return DayOfWeekModel(
             id = entity.id ?: 0,
-            name = entity.name,
-            abbrev = entity.abbrev
+            name = entity.name
         )
     }
 

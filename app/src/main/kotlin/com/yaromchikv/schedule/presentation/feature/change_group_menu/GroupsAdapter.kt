@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.yaromchikv.domain.model.GroupModel
-import com.yaromchikv.schedule.databinding.ItemGroupBinding
+import com.yaromchikv.schedule.databinding.ItemListBinding
 
 class GroupsAdapter : ListAdapter<GroupModel, GroupViewHolder>(DiffCallback) {
 
@@ -25,7 +25,7 @@ class GroupsAdapter : ListAdapter<GroupModel, GroupViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemGroupBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemListBinding.inflate(layoutInflater, parent, false)
         return GroupViewHolder(binding)
     }
 

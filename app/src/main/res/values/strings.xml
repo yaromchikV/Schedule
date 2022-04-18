@@ -7,8 +7,9 @@
     <string name="lesson_name">%s (%s)</string>
     <string name="weeks_enum">неделя: %s</string>
     <string name="teacher_text">%s (подгр. %d)</string>
-    <string name="empty_day">В этот день нет занятий</string>
+    <string name="time_format">%02d:%02d</string>
 
+    <string name="empty_day">В этот день нет занятий</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="auth">Авторизоваться</string>
@@ -33,8 +34,11 @@
     <string name="four">4</string>
     <string name="both">Общее</string>
     <string name="delete">Удалить</string>
+
     <string name="delete_alert_title">Вы действительно хотите удалить это занятие?</string>
     <string name="delete_alert_message">Отменить это действие будет невозможно</string>
     <string name="yes">Да</string>
+
+    <string name="not_selected">Не выбрано</string>
 
 </resources>

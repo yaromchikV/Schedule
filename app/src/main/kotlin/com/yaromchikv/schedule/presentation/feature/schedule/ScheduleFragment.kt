@@ -82,5 +82,4 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
             }
         }
     }
-
 }

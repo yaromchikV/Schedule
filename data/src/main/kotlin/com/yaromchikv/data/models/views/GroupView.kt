@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 
 @DatabaseView(
-    "SELECT groups.id, groups.name, specialities.name as speciality " +
+    "SELECT groups.id, groups.name, specialities.name AS speciality " +
             "FROM groups " +
-            "JOIN specialities ON specialities.id = groups.speciality_id"
+            "JOIN specialities ON specialities.id = speciality_id"
 )
 class GroupView(
     @ColumnInfo(name = "id") val id: Int,

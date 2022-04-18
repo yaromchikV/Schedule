@@ -79,7 +79,7 @@
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -99,7 +99,7 @@
                     android:hint="@string/lesson_type"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -118,7 +118,7 @@
                     android:hint="@string/classroom"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -137,7 +137,7 @@
                     android:hint="@string/teacher"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -164,7 +164,7 @@
                         android:hint="@string/begin_time"
                         android:padding="16dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -185,7 +185,7 @@
                         android:hint="@string/end_time"
                         android:padding="16dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -206,7 +206,7 @@
                     android:hint="@string/day_of_week"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -229,7 +229,7 @@
                         android:padding="16dp"
                         android:text="@string/weeks"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -245,7 +245,7 @@
                             android:padding="10dp"
                             android:text="@string/one"
                             android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <CheckBox
                             android:id="@+id/week_2"
@@ -255,7 +255,7 @@
                             android:padding="10dp"
                             android:text="@string/two"
                             android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <CheckBox
                             android:id="@+id/week_3"
@@ -265,7 +265,7 @@
                             android:padding="10dp"
                             android:text="@string/three"
                             android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <CheckBox
                             android:id="@+id/week_4"
@@ -275,7 +275,7 @@
                             android:padding="10dp"
                             android:text="@string/four"
                             android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -301,7 +301,7 @@
                         android:padding="16dp"
                         android:text="@string/subgroup"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioGroup
                         android:id="@+id/radioSubgroup"
@@ -317,7 +317,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:text="@string/one"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <RadioButton
                             android:id="@+id/subgroup_2"
@@ -325,7 +325,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:text="@string/two"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <RadioButton
                             android:id="@+id/subgroupBoth"
@@ -334,7 +334,7 @@
                             android:checked="true"
                             android:padding="10dp"
                             android:text="@string/both"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                     </RadioGroup>
 
@@ -361,7 +361,7 @@
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -383,7 +383,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/delete"
                     android:textColor="@color/red"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </androidx.cardview.widget.CardView>
 

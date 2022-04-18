@@ -1,7 +1,10 @@
 package com.yaromchikv.schedule.presentation.feature.editing
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -14,6 +17,8 @@ import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.FragmentEditLessonBinding
 import com.yaromchikv.schedule.presentation.MainViewModel
+import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
+import java.util.Calendar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -40,17 +45,26 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
 
     private fun setupClickListeners() {
         with(binding) {
-            backButton.setOnClickListener { findNavController().navigateUp() }
+            backButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
             applyButton.setOnClickListener {
-                applyButtonClick()
+                editLessonViewModel.applyChangesClick(getDataFromFields())
                 findNavController().navigateUp()
             }
             deleteCard.setOnClickListener {
                 showDeleteAlertDialog {
-                    findNavController().navigateUp()
                     editLessonViewModel.deleteButtonClick()
+                    findNavController().navigateUp()
                 }
             }
+            startTimeCard.setOnClickListener {
+                showTimePicker(startTimeText)
+            }
+            endTimeCard.setOnClickListener {
+                showTimePicker(endTimeText)
+            }
+
         }
     }
 
@@ -62,24 +76,37 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
         .create()
         .show()
 
-    private fun applyButtonClick() {
-        with(binding) {
+    private fun showTimePicker(textView: TextView) {
+        val calendar = Calendar.getInstance()
+        TimePickerDialog(
+            requireContext(),
+            { _: TimePicker?, hour: Int, minute: Int ->
+                textView.text = getString(R.string.time_format, hour, minute)
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        ).show()
+    }
+
+    private fun getDataFromFields(): LessonModel {
+        return with(binding) {
             val weeksList = mutableListOf<Int>()
             if (week1.isChecked) weeksList.add(1)
             if (week2.isChecked) weeksList.add(2)
             if (week3.isChecked) weeksList.add(3)
             if (week4.isChecked) weeksList.add(4)
 
-            val lesson = LessonModel(
+            LessonModel(
                 id = lessonId,
                 subject = subjectText.text.toString(),
                 typeId = editLessonViewModel.lesson.value?.typeId ?: 1,
-                type = typeText.text.toString(),
+                type = editLessonViewModel.lesson.value?.type ?: "default",
                 note = noteText.text.toString(),
                 startTime = startTimeText.text.toString(),
                 endTime = endTimeText.text.toString(),
                 dayOfWeekId = editLessonViewModel.lesson.value?.dayOfWeekId ?: 1,
-                dayOfWeek = dayOfWeekText.text.toString(),
+                dayOfWeek = editLessonViewModel.lesson.value?.dayOfWeek ?: "default",
                 weeks = weeksList,
                 subgroup = when (radioSubgroup.checkedRadioButtonId) {
                     subgroup1.id -> 1
@@ -87,12 +114,11 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                     else -> 0
                 },
                 teacherId = editLessonViewModel.lesson.value?.teacherId,
-                teacher = teacherText.text.toString(),
+                teacher = editLessonViewModel.lesson.value?.teacher,
                 classroomId = editLessonViewModel.lesson.value?.classroomId,
-                classroom = classroomText.text.toString(),
-                groupId = mainViewModel.selectedGroup.value?.id ?: 1
+                classroom = editLessonViewModel.lesson.value?.classroom,
+                groupId = mainViewModel.selectedGroup.value?.id ?: DEFAULT_ID
             )
-            editLessonViewModel.applyChangesClick(lesson)
         }
     }
 

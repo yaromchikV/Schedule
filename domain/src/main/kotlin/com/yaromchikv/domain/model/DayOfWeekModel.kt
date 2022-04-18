@@ -2,6 +2,5 @@ package com.yaromchikv.domain.model
 
 data class DayOfWeekModel(
     val id: Int,
-    val name: String,
-    val abbrev: String
+    val name: String
 )

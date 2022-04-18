@@ -43,7 +43,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loginViewModel.password = text.toString()
                 passwordTextField.error = null
             }
-
         }
     }
 

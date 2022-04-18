@@ -10,21 +10,22 @@
     android:foreground="?selectableItemBackgroundBorderless">
 
     <TextView
-        android:id="@+id/groupName"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/schedules"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:text="Какой-то текст" />
 
     <ImageView
         android:id="@+id/checkButton"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_check"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:tint="?attr/colorPrimary"
         tools:ignore="ContentDescription" />
 

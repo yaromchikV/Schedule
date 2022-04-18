@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.GroupModel
 import com.yaromchikv.domain.usecase.GetListOfGroupsUseCase
 import com.yaromchikv.schedule.presentation.common.AccessRights
+import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
 import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,9 +45,8 @@ class MainViewModel(
     }
 
     private fun updateSelectedGroup() {
-        _selectedGroup.value = _groups.value?.find {
-            it.id == preferences.getInt(GROUP_ID_PREFS_KEY, 1)
-        }?.apply {
+        val groupId = preferences.getInt(GROUP_ID_PREFS_KEY, DEFAULT_ID)
+        _selectedGroup.value = _groups.value?.find { it.id == groupId }?.apply {
             isSelected = true
         }
     }
@@ -57,7 +57,9 @@ class MainViewModel(
             _selectedGroup.value = group
             _groups.value?.map { it.isSelected = it.id == group.id }
 
-            preferences.edit().putInt(GROUP_ID_PREFS_KEY, _selectedGroup.value?.id ?: 1).apply()
+            preferences.edit()
+                .putInt(GROUP_ID_PREFS_KEY, _selectedGroup.value?.id ?: DEFAULT_ID)
+                .apply()
         }
     }
 }

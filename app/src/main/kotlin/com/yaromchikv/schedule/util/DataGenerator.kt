@@ -9,7 +9,7 @@ import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.RoleEntity
 import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
-import com.yaromchikv.data.models.entity.TypeEntity
+import com.yaromchikv.data.models.entity.LessonTypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
 import com.yaromchikv.domain.usecase.GetHashPasswordUseCase
 
@@ -46,13 +46,13 @@ class DataGenerator {
 
         fun generateDaysOfWeek(): List<DayOfWeekEntity> {
             val list = mutableListOf<DayOfWeekEntity>()
-            list.add(DayOfWeekEntity(name = "Понедельник", abbrev = "ПН"))
-            list.add(DayOfWeekEntity(name = "Вторник", abbrev = "ВТ"))
-            list.add(DayOfWeekEntity(name = "Среда", abbrev = "СР"))
-            list.add(DayOfWeekEntity(name = "Четверг", abbrev = "ЧТ"))
-            list.add(DayOfWeekEntity(name = "Пятница", abbrev = "ПТ"))
-            list.add(DayOfWeekEntity(name = "Суббота", abbrev = "СБ"))
-            list.add(DayOfWeekEntity(name = "Воскресенье", abbrev = "ВС"))
+            list.add(DayOfWeekEntity(name = "Понедельник"))
+            list.add(DayOfWeekEntity(name = "Вторник"))
+            list.add(DayOfWeekEntity(name = "Среда"))
+            list.add(DayOfWeekEntity(name = "Четверг"))
+            list.add(DayOfWeekEntity(name = "Пятница"))
+            list.add(DayOfWeekEntity(name = "Суббота"))
+            list.add(DayOfWeekEntity(name = "Воскресенье"))
             return list
         }
 
@@ -105,11 +105,11 @@ class DataGenerator {
             return list
         }
 
-        fun generateLessonTypes(): List<TypeEntity> {
-            val list = mutableListOf<TypeEntity>()
-            list.add(TypeEntity(type = "ЛК"))
-            list.add(TypeEntity(type = "ПЗ"))
-            list.add(TypeEntity(type = "ЛР"))
+        fun generateLessonTypes(): List<LessonTypeEntity> {
+            val list = mutableListOf<LessonTypeEntity>()
+            list.add(LessonTypeEntity(type = "ЛК"))
+            list.add(LessonTypeEntity(type = "ПЗ"))
+            list.add(LessonTypeEntity(type = "ЛР"))
             return list
         }
 
@@ -134,7 +134,7 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 3,
                     classroomId = 1,
-                    weeks = "01234",
+                    weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",
                     typeId = 2,
@@ -181,7 +181,7 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 2,
                     classroomId = 1,
-                    weeks = "01234",
+                    weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",
                     typeId = 1,
@@ -227,7 +227,7 @@ class DataGenerator {
                 LessonEntity(
                     dayOfWeekId = 4,
                     classroomId = 1,
-                    weeks = "01234",
+                    weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",
                     typeId = 2,

@@ -23,15 +23,15 @@ class ScheduleViewModel(
     private val _events = MutableSharedFlow<Event>()
     val events: SharedFlow<Event> = _events
 
-    private var getDaysOfWeek: Job? = null
+    private var getDaysOfWeekJob: Job? = null
 
     init {
         getDaysOfWeek()
     }
 
     private fun getDaysOfWeek() {
-        getDaysOfWeek?.cancel()
-        getDaysOfWeek = getListOfDaysOfWeekUseCase()
+        getDaysOfWeekJob?.cancel()
+        getDaysOfWeekJob = getListOfDaysOfWeekUseCase()
             .onEach { days -> _daysOfWeek.value = days }
             .launchIn(viewModelScope)
     }
@@ -56,6 +56,6 @@ class ScheduleViewModel(
 
     sealed class Event {
         data class ChangeFragment(val index: Int) : Event()
-        data class SelectLesson(val lessonId: Int): Event()
+        data class SelectLesson(val lessonId: Int) : Event()
     }
 }

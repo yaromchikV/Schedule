@@ -29,7 +29,11 @@ class ScheduleAdapter : ListAdapter<LessonModel, SubjectViewHolder>(DiffCallback
     }
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
-        holder.bind(getItem(position))
-        holder.itemView.setOnClickListener { onItemClickListener(getItem(position)) }
+        val lesson = getItem(position)
+
+        holder.bind(lesson)
+        holder.itemView.setOnClickListener {
+            onItemClickListener(lesson)
+        }
     }
 }

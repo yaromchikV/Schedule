@@ -37,7 +37,7 @@ import androidx.room.PrimaryKey
             onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = TypeEntity::class,
+            entity = LessonTypeEntity::class,
             parentColumns = ["id"],
             childColumns = ["type_id"],
             onDelete = ForeignKey.CASCADE,

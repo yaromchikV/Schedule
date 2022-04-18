@@ -47,6 +47,6 @@
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="6"
-        tools:listitem="@layout/item_group" />
+        tools:listitem="@layout/item_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

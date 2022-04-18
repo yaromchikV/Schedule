@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.usecase.GetListOfLessonsUseCase
+import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
 import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,14 +39,11 @@ class PageViewModel(
     }
 
     private fun getLessons() {
-        val groupId = preferences.getInt(GROUP_ID_PREFS_KEY, 1)
+        val groupId = preferences.getInt(GROUP_ID_PREFS_KEY, DEFAULT_ID)
 
         getLessonsJob?.cancel()
         getLessonsJob = getListOfLessonsUseCase(dayIndex + 1, groupId)
-            .onEach { lessons ->
-                Timber.i("day: ${dayIndex}; ${if (lessons.isNotEmpty()) lessons.toString() else "EMPTY"}")
-                _lessons.value = lessons
-            }
+            .onEach { lessons -> _lessons.value = lessons }
             .launchIn(viewModelScope)
     }
 

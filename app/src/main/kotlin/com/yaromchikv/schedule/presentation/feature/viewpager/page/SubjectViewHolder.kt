@@ -25,7 +25,7 @@ class SubjectViewHolder(private val binding: ItemLessonBinding) :
 
     private fun getWeeksText(lesson: LessonModel): String {
         val weeksList = lesson.weeks.toMutableList()
-        return if (!weeksList.contains(0)) {
+        return if (weeksList.size < 4) {
             binding.root.context.getString(
                 R.string.weeks_enum,
                 weeksList.joinToString(separator = ", ")
