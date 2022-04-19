@@ -15,6 +15,7 @@ class DayOfWeekViewHolder(private val binding: ItemListBinding) :
                 name.text = dayOfWeek.name
                 checkButton.isVisible = selectedId == dayOfWeek.id
             } else {
+                name.text = ""
                 checkButton.isVisible = selectedId == -1
             }
         }

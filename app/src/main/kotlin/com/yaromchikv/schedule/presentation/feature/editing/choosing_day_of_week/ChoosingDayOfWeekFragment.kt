@@ -35,7 +35,7 @@ class ChoosingDayOfWeekFragment : Fragment(R.layout.choosing_list_fragment) {
         setupRecyclerView()
         setupObservers()
 
-        binding.appBarTitle.text = "Аудитории"
+        binding.appBarTitle.text = "Дни недели"
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()

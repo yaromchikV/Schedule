@@ -15,6 +15,7 @@ class TeacherViewHolder(private val binding: ItemListBinding) :
                 name.text = getFullName(teacher)
                 checkButton.isVisible = selectedId == teacher.id
             } else {
+                name.text = ""
                 checkButton.isVisible = selectedId == -1
             }
         }

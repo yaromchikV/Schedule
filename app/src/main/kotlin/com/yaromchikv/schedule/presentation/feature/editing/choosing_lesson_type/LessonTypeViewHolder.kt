@@ -14,6 +14,7 @@ class LessonTypeViewHolder(private val binding: ItemListBinding) :
                 name.text = lessonType.type
                 checkButton.isVisible = selectedId == lessonType.id
             } else {
+                name.text = ""
                 checkButton.isVisible = selectedId == -1
             }
         }

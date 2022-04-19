@@ -19,6 +19,7 @@ class ClassroomViewHolder(private val binding: ItemListBinding) :
                 )
                 checkButton.isVisible = selectedId == classroom.id
             } else {
+                name.text = ""
                 checkButton.isVisible = selectedId == -1
             }
         }

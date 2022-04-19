@@ -41,5 +41,6 @@
     <string name="yes">Да</string>
 
     <string name="not_selected">Не выбрано</string>
+    <string name="error_not_fill_fields">Не удалось сохранить изменения: не все необходимые поля заполнены</string>
 
 </resources>

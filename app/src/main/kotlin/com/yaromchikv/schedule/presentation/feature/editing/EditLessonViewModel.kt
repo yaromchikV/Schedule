@@ -12,7 +12,9 @@ import com.yaromchikv.domain.usecase.GetLessonByIdUseCase
 import com.yaromchikv.domain.usecase.UpdateLessonUseCase
 import com.yaromchikv.schedule.presentation.common.NULL_ID
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +33,9 @@ class EditLessonViewModel(
 
     private var getLessonJob: Job? = null
 
+    private val _updateSuccessfully = MutableSharedFlow<Boolean>()
+    val updateSuccessfully: SharedFlow<Boolean> = _updateSuccessfully
+
     init {
         getLesson()
     }
@@ -44,7 +49,14 @@ class EditLessonViewModel(
 
     fun applyChangesClick(lessonModel: LessonModel) {
         viewModelScope.launch {
-            updateLessonUseCase(lessonModel)
+            if (lessonModel.subject.isBlank() || lessonModel.typeId == null || lessonModel.classroomId == null
+                || lessonModel.teacherId == null || lessonModel.dayOfWeekId == null || lessonModel.weeks.isEmpty()
+            ) {
+                _updateSuccessfully.emit(false)
+            } else {
+                updateLessonUseCase(lessonModel)
+                _updateSuccessfully.emit(true)
+            }
         }
     }
 

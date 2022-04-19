@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -54,7 +55,6 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                 val lesson = generateLessonFromFields()
                 lesson?.let {
                     editLessonViewModel.applyChangesClick(lesson)
-                    findNavController().navigateUp()
                 }
             }
             deleteCard.setOnClickListener {
@@ -150,7 +150,8 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                observeLesson()
+                launch { observeLesson() }
+                launch { observeUpdateState() }
             }
         }
     }
@@ -186,4 +187,17 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
         }
     }
 
+    private suspend fun observeUpdateState() {
+        editLessonViewModel.updateSuccessfully.collectLatest {
+            if (it) {
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_not_fill_fields),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
 }
