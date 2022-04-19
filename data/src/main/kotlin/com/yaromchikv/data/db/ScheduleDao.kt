@@ -17,6 +17,7 @@ import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
 import com.yaromchikv.data.models.entity.LessonTypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
+import com.yaromchikv.data.models.views.ClassroomView
 import com.yaromchikv.data.models.views.GroupView
 import com.yaromchikv.data.models.views.LessonView
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,15 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM days")
     fun getDaysOfWeek(): Flow<List<DayOfWeekEntity>>
+
+    @Query("SELECT * FROM teachers")
+    fun getTeachers(): Flow<List<TeacherEntity>>
+
+    @Query("SELECT * FROM ClassroomView")
+    fun getClassrooms(): Flow<List<ClassroomView>>
+
+    @Query("SELECT * FROM lesson_types")
+    fun getLessonTypes(): Flow<List<LessonTypeEntity>>
 
     @Query("SELECT id FROM users WHERE username = :username")
     fun getUsernameId(username: String): Flow<Int?>

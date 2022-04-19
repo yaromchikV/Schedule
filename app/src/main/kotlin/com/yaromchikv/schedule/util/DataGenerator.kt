@@ -60,12 +60,15 @@ class DataGenerator {
             val list = mutableListOf<BuildingEntity>()
             list.add(BuildingEntity(number = 1, name = "1 к."))
             list.add(BuildingEntity(number = 2, name = "2 к."))
+            list.add(BuildingEntity(number = 3, name = "3 к."))
             return list
         }
 
         fun generateClassrooms(): List<ClassroomEntity> {
             val list = mutableListOf<ClassroomEntity>()
             list.add(ClassroomEntity(number = "610", buildingId = 1))
+            list.add(ClassroomEntity(number = "205", buildingId = 3))
+            list.add(ClassroomEntity(number = "401", buildingId = 2))
             return list
         }
 
@@ -102,6 +105,14 @@ class DataGenerator {
                     rank = "доцент"
                 )
             )
+            list.add(
+                TeacherEntity(
+                    surname = "Иванов",
+                    name = "Иван",
+                    patronymic = "Иванович",
+                    rank = "профессор"
+                )
+            )
             return list
         }
 
@@ -133,7 +144,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 3,
-                    classroomId = 1,
+                    classroomId = 2,
                     weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",
@@ -148,7 +159,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 4,
-                    classroomId = 1,
+                    classroomId = 3,
                     weeks = "12",
                     startTime = "12:30",
                     endTime = "14:50",
@@ -180,7 +191,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 2,
-                    classroomId = 1,
+                    classroomId = 2,
                     weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",
@@ -195,7 +206,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 6,
-                    classroomId = 1,
+                    classroomId = 3,
                     weeks = "12",
                     startTime = "12:30",
                     endTime = "14:50",
@@ -211,7 +222,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 1,
-                    classroomId = 1,
+                    classroomId = 3,
                     weeks = "24",
                     startTime = "10:30",
                     endTime = "11:50",
@@ -226,7 +237,7 @@ class DataGenerator {
             list.add(
                 LessonEntity(
                     dayOfWeekId = 4,
-                    classroomId = 1,
+                    classroomId = 2,
                     weeks = "1234",
                     startTime = "15:30",
                     endTime = "19:50",

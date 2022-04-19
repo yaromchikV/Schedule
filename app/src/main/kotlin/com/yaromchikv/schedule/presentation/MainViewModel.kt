@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.GroupModel
-import com.yaromchikv.domain.usecase.GetListOfGroupsUseCase
+import com.yaromchikv.domain.usecase.GetGroupsUseCase
 import com.yaromchikv.schedule.presentation.common.AccessRights
 import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
 import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val preferences: SharedPreferences,
-    private val getListOfGroupsUseCase: GetListOfGroupsUseCase
+    private val getGroupsUseCase: GetGroupsUseCase
 ) : ViewModel() {
 
     private val _groups = MutableStateFlow<List<GroupModel>?>(null)
@@ -36,7 +36,7 @@ class MainViewModel(
 
     private fun getGroups() {
         getGroupsJob?.cancel()
-        getGroupsJob = getListOfGroupsUseCase()
+        getGroupsJob = getGroupsUseCase()
             .onEach { groups ->
                 _groups.value = groups
                 updateSelectedGroup()

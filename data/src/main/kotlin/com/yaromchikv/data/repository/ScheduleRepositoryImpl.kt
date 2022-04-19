@@ -2,12 +2,18 @@ package com.yaromchikv.data.repository
 
 import com.yaromchikv.data.api.ScheduleApi
 import com.yaromchikv.data.db.ScheduleDao
+import com.yaromchikv.data.mapper.ClassroomMapper
 import com.yaromchikv.data.mapper.DayOfWeekMapper
 import com.yaromchikv.data.mapper.GroupMapper
 import com.yaromchikv.data.mapper.LessonMapper
+import com.yaromchikv.data.mapper.LessonTypeMapper
+import com.yaromchikv.data.mapper.TeacherMapper
+import com.yaromchikv.domain.model.ClassroomModel
 import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.GroupModel
 import com.yaromchikv.domain.model.LessonModel
+import com.yaromchikv.domain.model.LessonTypeModel
+import com.yaromchikv.domain.model.TeacherModel
 import com.yaromchikv.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +23,10 @@ class ScheduleRepositoryImpl(
     private val dao: ScheduleDao,
     private val lessonMapper: LessonMapper,
     private val groupMapper: GroupMapper,
-    private val dayOfWeekMapper: DayOfWeekMapper
+    private val dayOfWeekMapper: DayOfWeekMapper,
+    private val teacherMapper: TeacherMapper,
+    private val lessonTypeMapper: LessonTypeMapper,
+    private val classroomMapper: ClassroomMapper
 ) : ScheduleRepository {
 
     override fun getLessons(dayIndex: Int, groupId: Int): Flow<List<LessonModel>> {
@@ -42,6 +51,21 @@ class ScheduleRepositoryImpl(
     override fun getGroups(): Flow<List<GroupModel>> {
         val dataFlow = dao.getGroups()
         return dataFlow.map { groupMapper.mapFromGroupModelList(it) }
+    }
+
+    override fun getTeachers(): Flow<List<TeacherModel>> {
+        val dataFlow = dao.getTeachers()
+        return dataFlow.map { teacherMapper.mapToTeacherModelList(it) }
+    }
+
+    override fun getLessonTypes(): Flow<List<LessonTypeModel>> {
+        val dataFlow = dao.getLessonTypes()
+        return dataFlow.map { lessonTypeMapper.mapToLessonTypeModelList(it) }
+    }
+
+    override fun getClassrooms(): Flow<List<ClassroomModel>> {
+        val dataFlow = dao.getClassrooms()
+        return dataFlow.map { classroomMapper.mapToClassroomModelList(it) }
     }
 
     override suspend fun updateLesson(lessonModel: LessonModel) {

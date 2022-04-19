@@ -16,14 +16,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.FragmentEditLessonBinding
-import com.yaromchikv.schedule.presentation.MainViewModel
-import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
+import com.yaromchikv.schedule.presentation.common.NULL_ID
 import java.util.Calendar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import timber.log.Timber
 
 class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
 
@@ -34,8 +32,12 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
         args.selectedLessonId
     }
 
-    private val mainViewModel by sharedViewModel<MainViewModel>()
-    private val editLessonViewModel by viewModel<EditLessonViewModel> { parametersOf(lessonId) }
+    private val editLessonViewModel by sharedViewModel<EditLessonViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        editLessonViewModel.setLessonId(lessonId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,8 +51,11 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                 findNavController().navigateUp()
             }
             applyButton.setOnClickListener {
-                editLessonViewModel.applyChangesClick(getDataFromFields())
-                findNavController().navigateUp()
+                val lesson = generateLessonFromFields()
+                lesson?.let {
+                    editLessonViewModel.applyChangesClick(lesson)
+                    findNavController().navigateUp()
+                }
             }
             deleteCard.setOnClickListener {
                 showDeleteAlertDialog {
@@ -58,6 +63,36 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                     findNavController().navigateUp()
                 }
             }
+
+            classroomCard.setOnClickListener {
+                findNavController().navigate(
+                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingClassroomFragment(
+                        editLessonViewModel.lesson.value?.classroomId ?: NULL_ID
+                    )
+                )
+            }
+            dayOfWeekCard.setOnClickListener {
+                findNavController().navigate(
+                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingDayOfWeekFragment(
+                        editLessonViewModel.lesson.value?.dayOfWeekId ?: NULL_ID
+                    )
+                )
+            }
+            typeCard.setOnClickListener {
+                findNavController().navigate(
+                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingLessonTypeFragment(
+                        editLessonViewModel.lesson.value?.typeId ?: NULL_ID
+                    )
+                )
+            }
+            teacherCard.setOnClickListener {
+                findNavController().navigate(
+                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingTeacherFragment(
+                        editLessonViewModel.lesson.value?.teacherId ?: NULL_ID
+                    )
+                )
+            }
+
             startTimeCard.setOnClickListener {
                 showTimePicker(startTimeText)
             }
@@ -89,35 +124,25 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
         ).show()
     }
 
-    private fun getDataFromFields(): LessonModel {
-        return with(binding) {
+    private fun generateLessonFromFields(): LessonModel? {
+        with(binding) {
             val weeksList = mutableListOf<Int>()
             if (week1.isChecked) weeksList.add(1)
             if (week2.isChecked) weeksList.add(2)
             if (week3.isChecked) weeksList.add(3)
             if (week4.isChecked) weeksList.add(4)
 
-            LessonModel(
-                id = lessonId,
+            return editLessonViewModel.lesson.value?.copy(
                 subject = subjectText.text.toString(),
-                typeId = editLessonViewModel.lesson.value?.typeId ?: 1,
-                type = editLessonViewModel.lesson.value?.type ?: "default",
                 note = noteText.text.toString(),
                 startTime = startTimeText.text.toString(),
                 endTime = endTimeText.text.toString(),
-                dayOfWeekId = editLessonViewModel.lesson.value?.dayOfWeekId ?: 1,
-                dayOfWeek = editLessonViewModel.lesson.value?.dayOfWeek ?: "default",
                 weeks = weeksList,
                 subgroup = when (radioSubgroup.checkedRadioButtonId) {
                     subgroup1.id -> 1
                     subgroup2.id -> 2
                     else -> 0
                 },
-                teacherId = editLessonViewModel.lesson.value?.teacherId,
-                teacher = editLessonViewModel.lesson.value?.teacher,
-                classroomId = editLessonViewModel.lesson.value?.classroomId,
-                classroom = editLessonViewModel.lesson.value?.classroom,
-                groupId = mainViewModel.selectedGroup.value?.id ?: DEFAULT_ID
             )
         }
     }
@@ -132,6 +157,7 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
 
     private suspend fun observeLesson() {
         editLessonViewModel.lesson.collectLatest { lesson ->
+            Timber.i(lesson.toString())
             lesson?.let {
                 with(binding) {
                     subjectText.setText(lesson.subject)

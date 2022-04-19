@@ -5,6 +5,7 @@
 
     <string name="group_name">%s (%s)</string>
     <string name="lesson_name">%s (%s)</string>
+    <string name="classroom_name">%s-%s</string>
     <string name="weeks_enum">неделя: %s</string>
     <string name="teacher_text">%s (подгр. %d)</string>
     <string name="time_format">%02d:%02d</string>

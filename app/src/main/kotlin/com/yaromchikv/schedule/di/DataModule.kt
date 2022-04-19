@@ -7,9 +7,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.yaromchikv.data.api.ScheduleApi
 import com.yaromchikv.data.db.ScheduleDatabase
+import com.yaromchikv.data.mapper.ClassroomMapper
 import com.yaromchikv.data.mapper.DayOfWeekMapper
 import com.yaromchikv.data.mapper.GroupMapper
 import com.yaromchikv.data.mapper.LessonMapper
+import com.yaromchikv.data.mapper.LessonTypeMapper
+import com.yaromchikv.data.mapper.TeacherMapper
 import com.yaromchikv.data.repository.ScheduleRepositoryImpl
 import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.util.DataGenerator
@@ -75,13 +78,17 @@ val dataModule = module {
             dao = get(),
             lessonMapper = get(),
             groupMapper = get(),
-            dayOfWeekMapper = get()
+            dayOfWeekMapper = get(),
+            teacherMapper = get(),
+            lessonTypeMapper = get(),
+            classroomMapper = get()
         )
     }
 
     factory { LessonMapper() }
-
     factory { GroupMapper() }
-
     factory { DayOfWeekMapper() }
+    factory { TeacherMapper() }
+    factory { LessonTypeMapper() }
+    factory { ClassroomMapper() }
 }

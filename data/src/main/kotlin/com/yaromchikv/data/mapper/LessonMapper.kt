@@ -8,12 +8,12 @@ class LessonMapper {
     fun mapToLessonEntity(model: LessonModel): LessonEntity {
         return LessonEntity(
             id = model.id,
-            dayOfWeekId = model.dayOfWeekId,
+            dayOfWeekId = model.dayOfWeekId ?: 0,
             classroomId = model.classroomId,
             weeks = model.weeks.joinToString(separator = ""),
             startTime = model.startTime,
             endTime = model.endTime,
-            typeId = model.typeId,
+            typeId = model.typeId ?: 0,
             subject = model.subject,
             note = model.note,
             groupId = model.groupId,

@@ -9,6 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.schedule.R
+import com.yaromchikv.schedule.databinding.ChoosingListFragmentBinding
 import com.yaromchikv.schedule.databinding.FragmentChangeGroupBinding
 import com.yaromchikv.schedule.presentation.MainViewModel
 import kotlinx.coroutines.flow.collectLatest

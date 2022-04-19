@@ -13,6 +13,7 @@ import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.TeacherEntity
 import com.yaromchikv.data.models.entity.LessonTypeEntity
 import com.yaromchikv.data.models.entity.UserEntity
+import com.yaromchikv.data.models.views.ClassroomView
 import com.yaromchikv.data.models.views.GroupView
 import com.yaromchikv.data.models.views.LessonView
 
@@ -31,6 +32,7 @@ import com.yaromchikv.data.models.views.LessonView
         LessonEntity::class
     ],
     views = [
+        ClassroomView::class,
         GroupView::class,
         LessonView::class
     ],

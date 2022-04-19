@@ -49,6 +49,70 @@
         <argument
             android:name="selectedLessonId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_editLessonFragment_to_choosingClassroomFragment"
+            app:destination="@id/choosingClassroomFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_editLessonFragment_to_choosingDayOfWeekFragment"
+            app:destination="@id/choosingDayOfWeekFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_editLessonFragment_to_choosingLessonTypeFragment"
+            app:destination="@id/choosingLessonTypeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_editLessonFragment_to_choosingTeacherFragment"
+            app:destination="@id/choosingTeacherFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
+    </fragment>
+    <fragment
+        android:id="@+id/choosingClassroomFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomFragment"
+        android:label="ChoosingClassroomFragment"
+        tools:layout="@layout/choosing_list_fragment">
+        <argument
+            android:name="classroomId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosingDayOfWeekFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_day_of_week.ChoosingDayOfWeekFragment"
+        android:label="ChoosingDayOfWeekFragment"
+        tools:layout="@layout/choosing_list_fragment">
+        <argument
+            android:name="dayOfWeekId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosingLessonTypeFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_lesson_type.ChoosingLessonTypeFragment"
+        android:label="ChoosingLessonTypeFragment"
+        tools:layout="@layout/choosing_list_fragment">
+        <argument
+            android:name="lessonTypeId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosingTeacherFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_teacher.ChoosingTeacherFragment"
+        android:label="ChoosingTeacherFragment"
+        tools:layout="@layout/choosing_list_fragment">
+        <argument
+            android:name="teacherId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
