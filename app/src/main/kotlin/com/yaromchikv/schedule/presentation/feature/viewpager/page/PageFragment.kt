@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.FragmentPageBinding
+import com.yaromchikv.schedule.presentation.common.NULL_ID
 import com.yaromchikv.schedule.presentation.feature.schedule.ScheduleViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -72,7 +73,7 @@ class PageFragment : Fragment(R.layout.fragment_page) {
         }
 
         scheduleAdapter.setOnItemClickListener {
-            scheduleViewModel.editLessonClick(it.id)
+            scheduleViewModel.editLessonClick(it.id ?: NULL_ID)
         }
     }
 

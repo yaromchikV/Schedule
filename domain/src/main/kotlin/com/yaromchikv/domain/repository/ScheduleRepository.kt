@@ -20,6 +20,7 @@ interface ScheduleRepository {
     fun getIdByUsername(username: String): Flow<Int?>
     fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?>
 
+    suspend fun addLesson(lessonModel: LessonModel)
     suspend fun updateLesson(lessonModel: LessonModel)
     suspend fun deleteLesson(lessonModel: LessonModel)
 }

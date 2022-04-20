@@ -68,6 +68,11 @@ class ScheduleRepositoryImpl(
         return dataFlow.map { classroomMapper.mapToClassroomModelList(it) }
     }
 
+    override suspend fun addLesson(lessonModel: LessonModel) {
+        val lessonEntity = lessonMapper.mapToLessonEntity(lessonModel)
+        dao.addLesson(lessonEntity)
+    }
+
     override suspend fun updateLesson(lessonModel: LessonModel) {
         val lessonEntity = lessonMapper.mapToLessonEntity(lessonModel)
         dao.updateLesson(lessonEntity)

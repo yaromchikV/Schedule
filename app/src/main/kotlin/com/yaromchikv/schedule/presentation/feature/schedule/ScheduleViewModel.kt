@@ -36,6 +36,12 @@ class ScheduleViewModel(
             .launchIn(viewModelScope)
     }
 
+    fun changeGroupClick() {
+        viewModelScope.launch {
+            _events.emit(Event.ChangeGroup)
+        }
+    }
+
     fun nextFragmentClick(current: Int?) {
         viewModelScope.launch {
             _events.emit(Event.ChangeFragment(if (current != null) current + 1 else 0))
@@ -54,8 +60,16 @@ class ScheduleViewModel(
         }
     }
 
+    fun addLessonClick() {
+        viewModelScope.launch {
+            _events.emit(Event.AddLesson)
+        }
+    }
+
     sealed class Event {
+        object ChangeGroup : Event()
         data class ChangeFragment(val index: Int) : Event()
         data class SelectLesson(val lessonId: Int) : Event()
+        object AddLesson : Event()
     }
 }

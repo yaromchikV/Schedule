@@ -3,16 +3,10 @@ package com.yaromchikv.schedule.di
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.yaromchikv.schedule.presentation.MainViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.EditLessonViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomAdapter
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_day_of_week.ChoosingDayOfWeekAdapter
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_day_of_week.ChoosingDayOfWeekViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_lesson_type.ChoosingLessonTypeAdapter
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_lesson_type.ChoosingLessonTypeViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_teacher.ChoosingTeacherAdapter
-import com.yaromchikv.schedule.presentation.feature.editing.choosing_teacher.ChoosingTeacherViewModel
 import com.yaromchikv.schedule.presentation.feature.login.LoginViewModel
+import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyLessonViewModel
+import com.yaromchikv.schedule.presentation.feature.modify_lessons.choosing_list.ChoosingModelAdapter
+import com.yaromchikv.schedule.presentation.feature.modify_lessons.choosing_list.ChoosingModelViewModel
 import com.yaromchikv.schedule.presentation.feature.schedule.ScheduleViewModel
 import com.yaromchikv.schedule.presentation.feature.viewpager.page.PageViewModel
 import com.yaromchikv.schedule.presentation.feature.viewpager.page.ScheduleAdapter
@@ -40,23 +34,25 @@ val appModule = module {
     }
 
     viewModel {
-        EditLessonViewModel(
+        ModifyLessonViewModel(
             getLessonByIdUseCase = get(),
             updateLessonUseCase = get(),
-            deleteLessonUseCase = get()
+            deleteLessonUseCase = get(),
+            addLessonUseCase = get()
         )
     }
 
-    viewModel { ChoosingClassroomViewModel(getClassroomsUseCase = get()) }
-    viewModel { ChoosingDayOfWeekViewModel(getDaysOfWeekUseCase = get()) }
-    viewModel { ChoosingLessonTypeViewModel(getLessonTypesUseCase = get()) }
-    viewModel { ChoosingTeacherViewModel(getTeachersUseCase = get()) }
+    viewModel { parameters ->
+        ChoosingModelViewModel(
+            listMode = parameters.get(),
+            getClassroomsUseCase = get(),
+            getDaysOfWeekUseCase = get(),
+            getLessonTypesUseCase = get(),
+            getTeachersUseCase = get()
+        )
+    }
 
     factory { ScheduleAdapter() }
-    factory { ChoosingClassroomAdapter() }
-    factory { ChoosingDayOfWeekAdapter() }
-    factory { ChoosingLessonTypeAdapter() }
-    factory { ChoosingTeacherAdapter() }
-
+    factory { ChoosingModelAdapter() }
 
 }

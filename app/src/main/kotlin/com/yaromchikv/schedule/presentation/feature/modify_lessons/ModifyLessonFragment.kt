@@ -1,4 +1,4 @@
-package com.yaromchikv.schedule.presentation.feature.editing
+package com.yaromchikv.schedule.presentation.feature.modify_lessons
 
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -16,34 +16,55 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.schedule.R
-import com.yaromchikv.schedule.databinding.FragmentEditLessonBinding
+import com.yaromchikv.schedule.databinding.FragmentModifyLessonBinding
+import com.yaromchikv.schedule.presentation.MainViewModel
 import com.yaromchikv.schedule.presentation.common.NULL_ID
 import java.util.Calendar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import timber.log.Timber
 
-class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
+class ModifyLessonFragment : Fragment(R.layout.fragment_modify_lesson) {
 
-    private val binding by viewBinding(FragmentEditLessonBinding::bind)
+    private val binding by viewBinding(FragmentModifyLessonBinding::bind)
 
-    private val lessonId: Int by lazy {
-        val args by navArgs<EditLessonFragmentArgs>()
-        args.selectedLessonId
-    }
+    private val args by navArgs<ModifyLessonFragmentArgs>()
 
-    private val editLessonViewModel by sharedViewModel<EditLessonViewModel>()
+    private val mainViewModel by sharedViewModel<MainViewModel>()
+    private val modifyLessonViewModel by sharedViewModel<ModifyLessonViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        editLessonViewModel.setLessonId(lessonId)
+        when (ModifyMode.values()[args.mode]) {
+            ModifyMode.EDIT -> modifyLessonViewModel.setLessonId(args.selectedLessonId)
+            ModifyMode.ADD -> modifyLessonViewModel.clearLesson()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickListeners()
         setupObservers()
+
+        with(binding) {
+            when (ModifyMode.values()[args.mode]) {
+                ModifyMode.EDIT -> {
+                    appBarTitle.text = "Редактирование"
+                    deleteCard.visibility = View.VISIBLE
+                }
+                ModifyMode.ADD -> {
+                    appBarTitle.text = "Добавление"
+                    deleteCard.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        generateLessonFromFields()?.let {
+            modifyLessonViewModel.updateLesson(it)
+        }
     }
 
     private fun setupClickListeners() {
@@ -52,45 +73,28 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
                 findNavController().navigateUp()
             }
             applyButton.setOnClickListener {
-                val lesson = generateLessonFromFields()
-                lesson?.let {
-                    editLessonViewModel.applyChangesClick(lesson)
+                generateLessonFromFields()?.let {
+                    modifyLessonViewModel.applyChangesClick(it)
                 }
             }
             deleteCard.setOnClickListener {
                 showDeleteAlertDialog {
-                    editLessonViewModel.deleteButtonClick()
+                    modifyLessonViewModel.deleteButtonClick()
                     findNavController().navigateUp()
                 }
             }
 
             classroomCard.setOnClickListener {
-                findNavController().navigate(
-                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingClassroomFragment(
-                        editLessonViewModel.lesson.value?.classroomId ?: NULL_ID
-                    )
-                )
+                navigateToChoosingList(ListMode.CLASSROOMS)
             }
             dayOfWeekCard.setOnClickListener {
-                findNavController().navigate(
-                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingDayOfWeekFragment(
-                        editLessonViewModel.lesson.value?.dayOfWeekId ?: NULL_ID
-                    )
-                )
+                navigateToChoosingList(ListMode.DAYS_OF_WEEK)
             }
             typeCard.setOnClickListener {
-                findNavController().navigate(
-                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingLessonTypeFragment(
-                        editLessonViewModel.lesson.value?.typeId ?: NULL_ID
-                    )
-                )
+                navigateToChoosingList(ListMode.LESSON_TYPES)
             }
             teacherCard.setOnClickListener {
-                findNavController().navigate(
-                    EditLessonFragmentDirections.actionEditLessonFragmentToChoosingTeacherFragment(
-                        editLessonViewModel.lesson.value?.teacherId ?: NULL_ID
-                    )
-                )
+                navigateToChoosingList(ListMode.TEACHERS)
             }
 
             startTimeCard.setOnClickListener {
@@ -101,6 +105,21 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
             }
 
         }
+    }
+
+    private fun navigateToChoosingList(mode: ListMode) {
+        val id = when (mode) {
+            ListMode.CLASSROOMS -> modifyLessonViewModel.lesson.value?.classroomId
+            ListMode.DAYS_OF_WEEK -> modifyLessonViewModel.lesson.value?.dayOfWeekId
+            ListMode.LESSON_TYPES -> modifyLessonViewModel.lesson.value?.typeId
+            ListMode.TEACHERS -> modifyLessonViewModel.lesson.value?.teacherId
+        } ?: NULL_ID
+
+        findNavController().navigate(
+            ModifyLessonFragmentDirections.actionEditLessonFragmentToChoosingModelFragment(
+                listMode = mode.ordinal, valueId = id
+            )
+        )
     }
 
     private fun showDeleteAlertDialog(action: () -> Unit) = AlertDialog.Builder(requireContext())
@@ -126,23 +145,23 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
 
     private fun generateLessonFromFields(): LessonModel? {
         with(binding) {
-            val weeksList = mutableListOf<Int>()
-            if (week1.isChecked) weeksList.add(1)
-            if (week2.isChecked) weeksList.add(2)
-            if (week3.isChecked) weeksList.add(3)
-            if (week4.isChecked) weeksList.add(4)
-
-            return editLessonViewModel.lesson.value?.copy(
+            return modifyLessonViewModel.lesson.value?.copy(
                 subject = subjectText.text.toString(),
                 note = noteText.text.toString(),
                 startTime = startTimeText.text.toString(),
                 endTime = endTimeText.text.toString(),
-                weeks = weeksList,
+                weeks = mutableListOf<Int>().apply {
+                    if (week1.isChecked) this.add(1)
+                    if (week2.isChecked) this.add(2)
+                    if (week3.isChecked) this.add(3)
+                    if (week4.isChecked) this.add(4)
+                },
                 subgroup = when (radioSubgroup.checkedRadioButtonId) {
                     subgroup1.id -> 1
                     subgroup2.id -> 2
                     else -> 0
                 },
+                groupId = mainViewModel.selectedGroup.value?.id
             )
         }
     }
@@ -157,8 +176,7 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
     }
 
     private suspend fun observeLesson() {
-        editLessonViewModel.lesson.collectLatest { lesson ->
-            Timber.i(lesson.toString())
+        modifyLessonViewModel.lesson.collectLatest { lesson ->
             lesson?.let {
                 with(binding) {
                     subjectText.setText(lesson.subject)
@@ -188,7 +206,7 @@ class EditLessonFragment : Fragment(R.layout.fragment_edit_lesson) {
     }
 
     private suspend fun observeUpdateState() {
-        editLessonViewModel.updateSuccessfully.collectLatest {
+        modifyLessonViewModel.applySuccessfully.collectLatest {
             if (it) {
                 findNavController().navigateUp()
             } else {

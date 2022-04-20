@@ -1,5 +1,6 @@
 package com.yaromchikv.schedule.di
 
+import com.yaromchikv.domain.usecase.AddLessonUseCase
 import com.yaromchikv.domain.usecase.DeleteLessonUseCase
 import com.yaromchikv.domain.usecase.GetAccessPermissionUseCase
 import com.yaromchikv.domain.usecase.GetClassroomsUseCase
@@ -28,4 +29,5 @@ val domainModule = module {
     factory { GetTeachersUseCase(repository = get()) }
     factory { GetLessonTypesUseCase(repository = get()) }
     factory { GetClassroomsUseCase(repository = get()) }
+    factory { AddLessonUseCase(repository = get()) }
 }

@@ -18,7 +18,13 @@
     <string name="input_login">Введите логин</string>
     <string name="input_password">Введите пароль</string>
 
-    <string name="editing">Редактирование</string>
+    <string name="editing_title">Редактирование</string>
+    <string name="adding_title">Добавление</string>
+    <string name="classrooms_title">Аудитории</string>
+    <string name="days_of_week_title">Дни недели</string>
+    <string name="lesson_types_title">Типы занятий</string>
+    <string name="teachers_title">Преподаватели</string>
+
     <string name="subject">Дисциплина</string>
     <string name="lesson_type">Тип занятия</string>
     <string name="classroom">Аудитория</string>
@@ -41,7 +47,6 @@
     <string name="yes">Да</string>
 
     <string name="not_selected_text">Не выбрано</string>
-    <string name="error_not_fill_fields">Не удалось сохранить изменения: не все необходимые поля заполнены</string>
-    <string name="title_activity_change_group_compose">ChangeGroupCompose</string>
+    <string name="error_not_fill_fields">Не удалось применить: не все обязательные характеристики заполнены</string>
 
 </resources>

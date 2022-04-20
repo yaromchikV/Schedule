@@ -1,4 +1,4 @@
-package com.yaromchikv.schedule.presentation.feature.change_group_menu
+package com.yaromchikv.schedule.presentation.feature.change_group
 
 import android.os.Bundle
 import android.view.View

@@ -29,8 +29,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_scheduleFragment_to_editLessonFragment"
-            app:destination="@id/editLessonFragment"
+            android:id="@+id/action_scheduleFragment_to_modifyLessonFragment"
+            app:destination="@id/modifyLessonFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
@@ -38,80 +38,39 @@
     </fragment>
     <fragment
         android:id="@+id/changeGroupFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.change_group_menu.ChangeGroupFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.change_group.ChangeGroupFragment"
         android:label="ChangeGroupFragment"
         tools:layout="@layout/fragment_change_group" />
     <fragment
-        android:id="@+id/editLessonFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.editing.EditLessonFragment"
-        android:label="EditLessonFragment"
-        tools:layout="@layout/fragment_edit_lesson">
+        android:id="@+id/modifyLessonFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyLessonFragment"
+        android:label="ModifyLessonFragment"
+        tools:layout="@layout/fragment_modify_lesson">
+        <argument
+            android:name="mode"
+            app:argType="integer" />
         <argument
             android:name="selectedLessonId"
+            android:defaultValue="-1"
             app:argType="integer" />
         <action
-            android:id="@+id/action_editLessonFragment_to_choosingClassroomFragment"
-            app:destination="@id/choosingClassroomFragment"
+            android:id="@+id/action_editLessonFragment_to_choosingModelFragment"
+            app:destination="@id/choosingModelFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
-        <action
-            android:id="@+id/action_editLessonFragment_to_choosingDayOfWeekFragment"
-            app:destination="@id/choosingDayOfWeekFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
-        <action
-            android:id="@+id/action_editLessonFragment_to_choosingLessonTypeFragment"
-            app:destination="@id/choosingLessonTypeFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
-        <action
-            android:id="@+id/action_editLessonFragment_to_choosingTeacherFragment"
-            app:destination="@id/choosingTeacherFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
-        android:id="@+id/choosingClassroomFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomFragment"
-        android:label="ChoosingClassroomFragment"
+        android:id="@+id/choosingModelFragment"
+        android:name="com.yaromchikv.schedule.presentation.feature.modify_lessons.choosing_list.ChoosingModelFragment"
+        android:label="ChoosingModelFragment"
         tools:layout="@layout/choosing_list_fragment">
         <argument
-            android:name="classroomId"
+            android:name="listMode"
             app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/choosingDayOfWeekFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_day_of_week.ChoosingDayOfWeekFragment"
-        android:label="ChoosingDayOfWeekFragment"
-        tools:layout="@layout/choosing_list_fragment">
         <argument
-            android:name="dayOfWeekId"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/choosingLessonTypeFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_lesson_type.ChoosingLessonTypeFragment"
-        android:label="ChoosingLessonTypeFragment"
-        tools:layout="@layout/choosing_list_fragment">
-        <argument
-            android:name="lessonTypeId"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/choosingTeacherFragment"
-        android:name="com.yaromchikv.schedule.presentation.feature.editing.choosing_teacher.ChoosingTeacherFragment"
-        android:label="ChoosingTeacherFragment"
-        tools:layout="@layout/choosing_list_fragment">
-        <argument
-            android:name="teacherId"
+            android:name="valueId"
             app:argType="integer" />
     </fragment>
 

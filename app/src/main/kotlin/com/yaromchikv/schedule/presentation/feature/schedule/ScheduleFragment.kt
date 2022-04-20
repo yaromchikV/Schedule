@@ -11,14 +11,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.FragmentScheduleBinding
 import com.yaromchikv.schedule.presentation.MainViewModel
-import com.yaromchikv.schedule.presentation.feature.editing.EditLessonViewModel
+import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyLessonViewModel
+import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyMode
 import com.yaromchikv.schedule.presentation.feature.viewpager.ViewPagerAdapter
 import java.time.LocalDate
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
@@ -27,7 +27,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private val mainViewModel by sharedViewModel<MainViewModel>()
     private val scheduleViewModel by viewModel<ScheduleViewModel>()
 
-    private val editLessonViewModel by sharedViewModel<EditLessonViewModel>()
+    private val editLessonViewModel by sharedViewModel<ModifyLessonViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +41,11 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 //        }
 
         binding.menuButton.setOnClickListener {
-            findNavController().navigate(ScheduleFragmentDirections.actionScheduleFragmentToChangeGroupFragment())
+            scheduleViewModel.changeGroupClick()
+        }
+
+        binding.addButton.setOnClickListener {
+            scheduleViewModel.addLessonClick()
         }
     }
 
@@ -73,13 +77,23 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private suspend fun observeEvents() {
         scheduleViewModel.events.collectLatest {
             when (it) {
+                is ScheduleViewModel.Event.ChangeGroup -> {
+                    findNavController().navigate(ScheduleFragmentDirections.actionScheduleFragmentToChangeGroupFragment())
+                }
                 is ScheduleViewModel.Event.ChangeFragment -> {
                     binding.viewPager.currentItem = it.index
                 }
                 is ScheduleViewModel.Event.SelectLesson -> {
                     findNavController().navigate(
-                        ScheduleFragmentDirections.actionScheduleFragmentToEditLessonFragment(
-                            it.lessonId
+                        ScheduleFragmentDirections.actionScheduleFragmentToModifyLessonFragment(
+                            mode = ModifyMode.EDIT.ordinal, selectedLessonId = it.lessonId
+                        )
+                    )
+                }
+                is ScheduleViewModel.Event.AddLesson -> {
+                    findNavController().navigate(
+                        ScheduleFragmentDirections.actionScheduleFragmentToModifyLessonFragment(
+                            mode = ModifyMode.ADD.ordinal
                         )
                     )
                 }

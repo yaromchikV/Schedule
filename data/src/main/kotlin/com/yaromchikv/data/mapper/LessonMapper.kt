@@ -16,7 +16,7 @@ class LessonMapper {
             typeId = model.typeId ?: 0,
             subject = model.subject,
             note = model.note,
-            groupId = model.groupId,
+            groupId = model.groupId ?: 0,
             subgroup = model.subgroup,
             teacherId = model.teacherId
         )
