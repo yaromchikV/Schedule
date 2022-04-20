@@ -3,7 +3,6 @@ package com.yaromchikv.schedule.di
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.yaromchikv.schedule.presentation.MainViewModel
-import com.yaromchikv.schedule.presentation.feature.change_group_menu.GroupsAdapter
 import com.yaromchikv.schedule.presentation.feature.editing.EditLessonViewModel
 import com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomAdapter
 import com.yaromchikv.schedule.presentation.feature.editing.choosing_classroom.ChoosingClassroomViewModel
@@ -54,7 +53,6 @@ val appModule = module {
     viewModel { ChoosingTeacherViewModel(getTeachersUseCase = get()) }
 
     factory { ScheduleAdapter() }
-    factory { GroupsAdapter() }
     factory { ChoosingClassroomAdapter() }
     factory { ChoosingDayOfWeekAdapter() }
     factory { ChoosingLessonTypeAdapter() }

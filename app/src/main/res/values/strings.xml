@@ -40,7 +40,8 @@
     <string name="delete_alert_message">Отменить это действие будет невозможно</string>
     <string name="yes">Да</string>
 
-    <string name="not_selected">Не выбрано</string>
+    <string name="not_selected_text">Не выбрано</string>
     <string name="error_not_fill_fields">Не удалось сохранить изменения: не все необходимые поля заполнены</string>
+    <string name="title_activity_change_group_compose">ChangeGroupCompose</string>
 
 </resources>
