@@ -7,10 +7,7 @@ import com.yaromchikv.domain.model.DayOfWeekModel
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.model.LessonTypeModel
 import com.yaromchikv.domain.model.TeacherModel
-import com.yaromchikv.domain.usecase.AddLessonUseCase
-import com.yaromchikv.domain.usecase.DeleteLessonUseCase
-import com.yaromchikv.domain.usecase.GetLessonByIdUseCase
-import com.yaromchikv.domain.usecase.UpdateLessonUseCase
+import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.presentation.common.NULL_ID
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,10 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ModifyLessonViewModel(
-    private val getLessonByIdUseCase: GetLessonByIdUseCase,
-    private val addLessonUseCase: AddLessonUseCase,
-    private val updateLessonUseCase: UpdateLessonUseCase,
-    private val deleteLessonUseCase: DeleteLessonUseCase
+    private val repository: ScheduleRepository
 ) : ViewModel() {
 
     private var lessonId: Int = NULL_ID
@@ -40,7 +34,7 @@ class ModifyLessonViewModel(
 
     private fun getLesson() {
         getLessonJob?.cancel()
-        getLessonJob = getLessonByIdUseCase(lessonId)
+        getLessonJob = repository.getLessonById(lessonId)
             .onEach { lesson -> _lesson.value = lesson }
             .launchIn(viewModelScope)
     }
@@ -52,12 +46,12 @@ class ModifyLessonViewModel(
     fun applyChangesClick(lessonModel: LessonModel) {
         viewModelScope.launch {
             val isCorrect =
-                lessonModel.subject.isNotBlank() && lessonModel.startTime.isNotBlank() && lessonModel.endTime.isNotBlank() && lessonModel.typeId != null && lessonModel.classroomId != null && lessonModel.teacherId != null && lessonModel.dayOfWeekId != null && lessonModel.weeks.isNotEmpty()
+                lessonModel.subject.isNotBlank() && lessonModel.startTime.isNotBlank() && lessonModel.endTime.isNotBlank() && lessonModel.typeId != null && lessonModel.dayOfWeekId != null && lessonModel.weeks.isNotEmpty()
             if (isCorrect) {
                 if (lessonId == NULL_ID) {
-                    addLessonUseCase(lessonModel)
+                    repository.addLesson(lessonModel)
                 } else {
-                    updateLessonUseCase(lessonModel)
+                    repository.updateLesson(lessonModel)
                 }
             }
             _applySuccessfully.emit(isCorrect)
@@ -66,7 +60,7 @@ class ModifyLessonViewModel(
 
     fun deleteButtonClick() {
         viewModelScope.launch {
-            _lesson.value?.let { deleteLessonUseCase(it) }
+            _lesson.value?.let { repository.deleteLesson(it) }
         }
     }
 

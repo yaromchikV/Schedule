@@ -3,7 +3,7 @@ package com.yaromchikv.schedule.presentation.feature.schedule
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yaromchikv.domain.model.DayOfWeekModel
-import com.yaromchikv.domain.usecase.GetDaysOfWeekUseCase
+import com.yaromchikv.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ScheduleViewModel(
-    private val getDaysOfWeekUseCase: GetDaysOfWeekUseCase
+    private val repository: ScheduleRepository
 ) : ViewModel() {
 
     private val _daysOfWeek = MutableStateFlow<List<DayOfWeekModel>>(emptyList())
@@ -31,7 +31,7 @@ class ScheduleViewModel(
 
     private fun getDaysOfWeek() {
         getDaysOfWeekJob?.cancel()
-        getDaysOfWeekJob = getDaysOfWeekUseCase()
+        getDaysOfWeekJob = repository.getDaysOfWeek()
             .onEach { days -> _daysOfWeek.value = days }
             .launchIn(viewModelScope)
     }

@@ -1,5 +1,6 @@
 package com.yaromchikv.data.mapper
 
+import com.yaromchikv.data.models.dto.TeacherDto
 import com.yaromchikv.data.models.entity.TeacherEntity
 import com.yaromchikv.domain.model.TeacherModel
 
@@ -16,7 +17,7 @@ class TeacherMapper {
 
     fun mapToTeacherModel(entity: TeacherEntity): TeacherModel {
         return TeacherModel(
-            id = entity.id ?: 0,
+            id = entity.id,
             surname = entity.surname,
             name = entity.name,
             patronymic = entity.patronymic,
@@ -24,7 +25,25 @@ class TeacherMapper {
         )
     }
 
+    fun mapToTeacherModelFromDto(dto: TeacherDto): TeacherModel {
+        return TeacherModel(
+            id = dto.id,
+            surname = dto.surname,
+            name = dto.name,
+            patronymic = dto.patronymic,
+            rank = dto.rank ?: ""
+        )
+    }
+
+    fun mapToTeacherEntityList(list: List<TeacherModel>): List<TeacherEntity> {
+        return list.map { mapToTeacherEntity(it) }
+    }
+
     fun mapToTeacherModelList(list: List<TeacherEntity>): List<TeacherModel> {
         return list.map { mapToTeacherModel(it) }
+    }
+
+    fun mapToTeacherModelListFromDto(list: List<TeacherDto>): List<TeacherModel> {
+        return list.map { mapToTeacherModelFromDto(it) }
     }
 }

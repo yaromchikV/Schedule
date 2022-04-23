@@ -19,6 +19,15 @@ class SubjectViewHolder(private val binding: ItemLessonBinding) :
             teacher.text = getTeacherText(lesson)
             note.text = lesson.note
 
+            divider.setBackgroundResource(
+                when (lesson.type) {
+                    "ЛР" -> R.color.red
+                    "ПЗ" -> R.color.yellow
+                    "ЛК" -> R.color.green
+                    else -> R.color.black
+                }
+            )
+
             note.visibility = if (!lesson.note.isNullOrBlank()) View.VISIBLE else View.GONE
         }
     }

@@ -37,10 +37,10 @@
             android:layout_width="3dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:background="@android:color/holo_red_light"
             app:layout_constraintBottom_toBottomOf="@id/endTime"
             app:layout_constraintStart_toEndOf="@id/startTime"
-            app:layout_constraintTop_toTopOf="@id/startTime" />
+            app:layout_constraintTop_toTopOf="@id/startTime"
+            tools:background="@color/red" />
 
         <TextView
             android:id="@+id/subject"

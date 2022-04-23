@@ -4,18 +4,30 @@ import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 
 @DatabaseView(
-    "SELECT lessons.id, lessons.subject, lesson_types.id AS type_id, lesson_types.type AS type, lessons.note, start_time, end_time, " +
-            "days.id AS day_id, days.name AS day_name, lessons.week_number, lessons.subgroup, teachers.id AS teacher_id, " +
+    "SELECT " +
+            "lessons.id, " +
+            "lessons.subject, " +
+            "lesson_types.id AS type_id, " +
+            "lesson_types.type AS type, " +
+            "lessons.note, " +
+            "start_time, " +
+            "end_time, " +
+            "days.id AS day_id, " +
+            "days.name AS day_name, " +
+            "lessons.week_number, " +
+            "lessons.subgroup, " +
+            "teachers.id AS teacher_id, " +
             "(teachers.surname || ' ' || substr(teachers.name, 1, 1) || '. ' || substr(teachers.patronymic, 1, 1) || '.') AS teacher, " +
-            "classrooms.id AS classroom_id, (classrooms.number || '-' || buildings.name) AS classroom, " +
+            "classrooms.id AS classroom_id, " +
+            "(classrooms.number || '-' || buildings.name) AS classroom, " +
             "groups.id AS group_id " +
             "FROM lessons " +
-            "JOIN groups ON groups.id = group_id " +
-            "JOIN teachers ON teachers.id = teacher_id " +
-            "JOIN classrooms ON classrooms.id = classroom_id " +
-            "JOIN buildings ON buildings.id = classrooms.building_id " +
-            "JOIN lesson_types ON lesson_types.id = type_id " +
-            "JOIN days ON days.id = day_of_week_id"
+            "LEFT JOIN groups ON groups.id = group_id " +
+            "LEFT JOIN teachers ON teachers.id = teacher_id " +
+            "LEFT JOIN classrooms ON classrooms.id = classroom_id " +
+            "LEFT JOIN buildings ON buildings.id = classrooms.building_id " +
+            "LEFT JOIN lesson_types ON lesson_types.id = type_id " +
+            "LEFT JOIN days ON days.id = day_of_week_id"
 )
 data class LessonView(
     @ColumnInfo(name = "id") val id: Int,

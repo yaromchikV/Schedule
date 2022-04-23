@@ -2,6 +2,8 @@ package com.yaromchikv.schedule.presentation.feature.change_group
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,27 +32,39 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.domain.model.GroupModel
 import com.yaromchikv.schedule.R
+import com.yaromchikv.schedule.databinding.DialogAddGroupBinding
 import com.yaromchikv.schedule.databinding.FragmentChangeGroupBinding
 import com.yaromchikv.schedule.presentation.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
 
     private val binding by viewBinding(FragmentChangeGroupBinding::bind)
 
     private val mainViewModel by sharedViewModel<MainViewModel>()
-    //private val changeGroupViewModel by viewModel<ChangeGroupViewModel>()
+    private val changeGroupViewModel by viewModel<ChangeGroupViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.addButton.setOnClickListener {
+            showAddGroupDialog()
         }
 
         binding.composeList.apply {
@@ -67,6 +81,30 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                changeGroupViewModel.addGroupState.collectLatest {
+                    when (it) {
+                        is ChangeGroupViewModel.UiState.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
+                        is ChangeGroupViewModel.UiState.Ready -> {
+                            binding.progressBar.isVisible = false
+                        }
+                        is ChangeGroupViewModel.UiState.Error -> {
+                            binding.progressBar.isVisible = false
+                            Toast.makeText(
+                                requireContext(),
+                                it.message ?: "Unknown error",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
     }
 
     @Composable
@@ -75,7 +113,7 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
         itemViewStates: List<GroupModel>,
         itemClickedCallback: (groupModel: GroupModel) -> Unit
     ) {
-        LazyColumn(modifier = modifier.padding(top = 58.dp)) {
+        LazyColumn(modifier = modifier) {
             items(itemViewStates) { groupModel ->
                 MyComposeListItem(
                     group = groupModel,
@@ -127,5 +165,18 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
                 }
             }
         }
+    }
+
+    private fun showAddGroupDialog() {
+        val dialogBinding = DialogAddGroupBinding.inflate(layoutInflater)
+        AlertDialog.Builder(requireContext())
+            .setTitle("Добавить расписание")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Добавить") { _, _ ->
+                changeGroupViewModel.addGroupClick(dialogBinding.groupEditText.text.toString())
+            }
+            .setNegativeButton("Отмена") { _, _ -> }
+            .create()
+            .show()
     }
 }

@@ -3,18 +3,18 @@ package com.yaromchikv.data.models.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.yaromchikv.domain.model.schedule.LessonInterface
+import com.yaromchikv.domain.model.schedule.TeacherInterface
 
 @JsonClass(generateAdapter = true)
 data class LessonDto(
-    @Json(name = "auditory") val auditory: List<String>,
-    @Json(name = "weekNumber") val weekNumber: List<Any>,
-    @Json(name = "startLessonTime") val startLessonTime: String,
-    @Json(name = "endLessonTime") val endLessonTime: String,
-    @Json(name = "lessonType") val lessonType: String,
-    @Json(name = "subject") val subject: String,
-    @Json(name = "subjectFullName") val subjectFullName: String,
-    @Json(name = "note") val note: String?,
-    @Json(name = "employee") val employee: List<EmployeeDto>,
-    @Json(name = "studentGroup") val studentGroup: List<String>,
-    @Json(name = "numSubgroup") val numSubgroup: Int
-)
+    @Json(name = "auditory") override val classroom: List<String>,
+    @Json(name = "weekNumber") override val weeks: List<Int>,
+    @Json(name = "startLessonTime") override val startTime: String,
+    @Json(name = "endLessonTime") override val endTime: String,
+    @Json(name = "lessonType") override val lessonType: String,
+    @Json(name = "subject") override val subject: String,
+    @Json(name = "note") override val note: String?,
+    @Json(name = "employee") override val teacher: List<TeacherDto>,
+    @Json(name = "numSubgroup") override val subgroup: Int
+) : LessonInterface

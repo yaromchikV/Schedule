@@ -13,7 +13,7 @@ class LessonTypeMapper {
 
     fun mapToLessonTypeModel(entity: LessonTypeEntity): LessonTypeModel {
         return LessonTypeModel(
-            id = entity.id ?: 0,
+            id = entity.id,
             type = entity.type
         )
     }

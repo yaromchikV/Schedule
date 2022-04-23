@@ -12,6 +12,7 @@ import com.yaromchikv.data.mapper.DayOfWeekMapper
 import com.yaromchikv.data.mapper.GroupMapper
 import com.yaromchikv.data.mapper.LessonMapper
 import com.yaromchikv.data.mapper.LessonTypeMapper
+import com.yaromchikv.data.mapper.SpecialityMapper
 import com.yaromchikv.data.mapper.TeacherMapper
 import com.yaromchikv.data.repository.ScheduleRepositoryImpl
 import com.yaromchikv.domain.repository.ScheduleRepository
@@ -56,14 +57,7 @@ val dataModule = module {
                         dao.insertListOfRoles(DataGenerator.generateRoles())
                         dao.insertListOfUsers(DataGenerator.generateUsers())
                         dao.insertListOfDaysOfWeek(DataGenerator.generateDaysOfWeek())
-                        dao.insertListOfBuildings(DataGenerator.generateBuildings())
-                        dao.insertListOfClassrooms(DataGenerator.generateClassrooms())
-                        dao.insertListOfFaculties(DataGenerator.generateFaculties())
-                        dao.insertListOfSpecialities(DataGenerator.generateSpecialities())
-                        dao.insertListOfGroups(DataGenerator.generateGroups())
-                        dao.insertListOfTeachers(DataGenerator.generateTeachers())
                         dao.insertListOfLessonTypes(DataGenerator.generateLessonTypes())
-                        dao.insertListOfLessons(DataGenerator.generateLessons())
                     }
                 }
             }
@@ -81,7 +75,8 @@ val dataModule = module {
             dayOfWeekMapper = get(),
             teacherMapper = get(),
             lessonTypeMapper = get(),
-            classroomMapper = get()
+            classroomMapper = get(),
+            specialityMapper = get()
         )
     }
 
@@ -91,4 +86,5 @@ val dataModule = module {
     factory { TeacherMapper() }
     factory { LessonTypeMapper() }
     factory { ClassroomMapper() }
+    factory { SpecialityMapper() }
 }

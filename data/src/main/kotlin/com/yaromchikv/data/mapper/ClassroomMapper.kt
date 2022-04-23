@@ -1,5 +1,6 @@
 package com.yaromchikv.data.mapper
 
+import com.yaromchikv.data.models.dto.ClassroomDto
 import com.yaromchikv.data.models.entity.ClassroomEntity
 import com.yaromchikv.data.models.views.ClassroomView
 import com.yaromchikv.domain.model.ClassroomModel
@@ -22,7 +23,24 @@ class ClassroomMapper {
         )
     }
 
+    fun mapToClassroomModelFromDto(dto: ClassroomDto): ClassroomModel {
+        return ClassroomModel(
+            id = dto.id,
+            number = dto.name,
+            buildingId = dto.building.id,
+            buildingName = dto.building.name
+        )
+    }
+
     fun mapToClassroomModelList(list: List<ClassroomView>): List<ClassroomModel> {
         return list.map { mapToClassroomModel(it) }
+    }
+
+    fun mapToClassroomEntityList(list: List<ClassroomModel>): List<ClassroomEntity> {
+        return list.map { mapToClassroomEntity(it) }
+    }
+
+    fun mapToClassroomModelListFromDto(list: List<ClassroomDto>): List<ClassroomModel> {
+        return list.map { mapToClassroomModelFromDto(it) }
     }
 }

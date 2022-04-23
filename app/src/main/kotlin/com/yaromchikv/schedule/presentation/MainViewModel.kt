@@ -3,8 +3,9 @@ package com.yaromchikv.schedule.presentation
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yaromchikv.domain.common.Result
 import com.yaromchikv.domain.model.GroupModel
-import com.yaromchikv.domain.usecase.GetGroupsUseCase
+import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.presentation.common.AccessRights
 import com.yaromchikv.schedule.presentation.common.DEFAULT_ID
 import com.yaromchikv.schedule.presentation.common.GROUP_ID_PREFS_KEY
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val preferences: SharedPreferences,
-    private val getGroupsUseCase: GetGroupsUseCase
+    private val repository: ScheduleRepository
 ) : ViewModel() {
 
     private val _groups = MutableStateFlow<List<GroupModel>?>(null)
@@ -30,13 +31,72 @@ class MainViewModel(
 
     private var getGroupsJob: Job? = null
 
+    private var fetchTeachersJob: Job? = null
+    private var fetchClassroomsJob: Job? = null
+    private var fetchSpecialitiesJob: Job? = null
+
     init {
+        fetchTeachers()
+        fetchClassrooms()
+        fetchSpecialities()
         getGroups()
+    }
+
+    private fun fetchTeachers() {
+        fetchTeachersJob?.cancel()
+        fetchTeachersJob = repository.getCountOfTeachers()
+            .onEach { count ->
+                if (count == 0) {
+                    when (val teachers = repository.getTeachersFromApi()) {
+                        is Result.Success -> {
+                            teachers.data?.let { repository.addTeachersList(it) }
+                        }
+                        is Result.Error -> Unit
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun fetchClassrooms() {
+        fetchClassroomsJob?.cancel()
+        fetchClassroomsJob = repository.getCountOfClassrooms()
+            .onEach { count ->
+                if (count == 0) {
+                    when (val classrooms = repository.getClassroomsFromApi()) {
+                        is Result.Success -> {
+                            classrooms.data?.let { classroomsList ->
+                                repository.addClassroomList(classroomsList)
+                            }
+                        }
+                        is Result.Error -> Unit
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun fetchSpecialities() {
+        fetchSpecialitiesJob?.cancel()
+        fetchSpecialitiesJob = repository.getCountOfSpecialities()
+            .onEach { count ->
+                if (count == 0) {
+                    when (val specialities = repository.getSpecialitiesFromApi()) {
+                        is Result.Success -> {
+                            specialities.data?.let { specialitiesList ->
+                                repository.addSpecialityList(specialitiesList)
+                            }
+                        }
+                        is Result.Error -> Unit
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun getGroups() {
         getGroupsJob?.cancel()
-        getGroupsJob = getGroupsUseCase()
+        getGroupsJob = repository.getGroups()
             .onEach { groups ->
                 _groups.value = groups
                 updateSelectedGroup()
@@ -50,7 +110,6 @@ class MainViewModel(
             isSelected = true
         }
     }
-
 
     fun selectGroupClick(group: GroupModel) {
         viewModelScope.launch {

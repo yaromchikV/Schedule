@@ -1,6 +1,6 @@
 package com.yaromchikv.domain.common
 
-private sealed class Result<T>(val data: T? = null, val error: Throwable? = null) {
+sealed class Result<T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T?) : Result<T>(data = data)
-    class Error<T>(error: Throwable) : Result<T>(error = error)
+    class Error<T>(message: String) : Result<T>(message = message)
 }

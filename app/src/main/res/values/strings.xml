@@ -48,5 +48,11 @@
 
     <string name="not_selected_text">Не выбрано</string>
     <string name="error_not_fill_fields">Не удалось применить: не все обязательные характеристики заполнены</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="patronymic">Отчество</string>
+    <string name="rank">Ученое звание</string>
+    <string name="add_group_title">← Добавьте группу</string>
+    <string name="input_group_number">Введите номер группы</string>
 
 </resources>

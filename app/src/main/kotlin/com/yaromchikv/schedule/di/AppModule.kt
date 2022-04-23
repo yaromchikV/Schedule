@@ -3,6 +3,7 @@ package com.yaromchikv.schedule.di
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.yaromchikv.schedule.presentation.MainViewModel
+import com.yaromchikv.schedule.presentation.feature.change_group.ChangeGroupViewModel
 import com.yaromchikv.schedule.presentation.feature.login.LoginViewModel
 import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyLessonViewModel
 import com.yaromchikv.schedule.presentation.feature.modify_lessons.choosing_list.ChoosingModelAdapter
@@ -17,38 +18,32 @@ val appModule = module {
 
     factory<SharedPreferences> { PreferenceManager.getDefaultSharedPreferences(get()) }
 
-    viewModel { MainViewModel(preferences = get(), getGroupsUseCase = get()) }
+    viewModel { MainViewModel(preferences = get(), repository = get()) }
 
-    viewModel { LoginViewModel(getIdByUsernameUseCase = get(), getAccessPermissionUseCase = get()) }
+    viewModel { LoginViewModel(repository = get(), getAccessPermissionUseCase = get()) }
 
-    viewModel { ScheduleViewModel(getDaysOfWeekUseCase = get()) }
+    viewModel { ScheduleViewModel(repository = get()) }
 
-    //viewModel { ChangeGroupViewModel() }
+    viewModel { ChangeGroupViewModel(repository = get()) }
 
     viewModel { parameters ->
         PageViewModel(
             dayIndex = parameters.get(),
-            getLessonsUseCase = get(),
+            repository = get(),
             preferences = get()
         )
     }
 
     viewModel {
         ModifyLessonViewModel(
-            getLessonByIdUseCase = get(),
-            updateLessonUseCase = get(),
-            deleteLessonUseCase = get(),
-            addLessonUseCase = get()
+            repository = get()
         )
     }
 
     viewModel { parameters ->
         ChoosingModelViewModel(
             listMode = parameters.get(),
-            getClassroomsUseCase = get(),
-            getDaysOfWeekUseCase = get(),
-            getLessonTypesUseCase = get(),
-            getTeachersUseCase = get()
+            repository = get()
         )
     }
 

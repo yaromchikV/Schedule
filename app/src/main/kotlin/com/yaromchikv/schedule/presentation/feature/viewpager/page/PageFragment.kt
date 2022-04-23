@@ -94,11 +94,20 @@ class PageFragment : Fragment(R.layout.fragment_page) {
     }
 
     private suspend fun observeLessons() {
-        pageViewModel.lessons.collectLatest {
-            it?.let {
-                binding.noLesson.visibility =
-                    if (it.isEmpty()) View.VISIBLE else View.GONE
-                scheduleAdapter.submitList(it)
+        pageViewModel.lessonsState.collectLatest {
+            when (it) {
+                is PageViewModel.UiState.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is PageViewModel.UiState.Ready -> {
+                    binding.progressBar.isVisible = false
+                    it.data.let { list ->
+                        binding.noLesson.visibility =
+                            if (list.isEmpty()) View.VISIBLE else View.GONE
+                        scheduleAdapter.submitList(list)
+                    }
+                }
+                else -> Unit
             }
         }
     }

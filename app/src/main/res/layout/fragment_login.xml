@@ -7,6 +7,7 @@
     tools:context=".presentation.feature.login.LoginFragment">
 
     <ImageView
+        android:id="@+id/lockImage"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginTop="30dp"
@@ -17,6 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="?attr/colorPrimary"
         tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/usernameTextField" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameTextField"

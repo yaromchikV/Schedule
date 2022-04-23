@@ -65,7 +65,7 @@
         android:id="@+id/choosingModelFragment"
         android:name="com.yaromchikv.schedule.presentation.feature.modify_lessons.choosing_list.ChoosingModelFragment"
         android:label="ChoosingModelFragment"
-        tools:layout="@layout/choosing_list_fragment">
+        tools:layout="@layout/fragment_choosing_list">
         <argument
             android:name="listMode"
             app:argType="integer" />

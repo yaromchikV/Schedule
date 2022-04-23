@@ -3,6 +3,7 @@ package com.yaromchikv.schedule.presentation.feature.login
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -72,13 +73,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun setupObservers() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                loginViewModel.access.collectLatest { rights ->
+                loginViewModel.accessState.collectLatest { rights ->
                     when (rights) {
+                        is LoginViewModel.AccessState.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
                         is LoginViewModel.AccessState.Granted -> {
+                            binding.progressBar.isVisible = false
                             mainViewModel.accessRights = rights.accessRights
                             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToScheduleFragment())
                         }
                         is LoginViewModel.AccessState.Denied -> {
+                            binding.progressBar.isVisible = false
                             binding.passwordTextField.editText?.setText("")
                             Toast.makeText(
                                 requireContext(),

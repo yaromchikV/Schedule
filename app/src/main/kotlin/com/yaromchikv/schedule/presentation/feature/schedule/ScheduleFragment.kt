@@ -2,6 +2,7 @@ package com.yaromchikv.schedule.presentation.feature.schedule
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -67,9 +68,14 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
     private suspend fun observeGroups() {
         mainViewModel.selectedGroup.collectLatest { group ->
-            group?.let {
-                binding.appBarTitle.text =
-                    getString(R.string.group_name, group.name, group.speciality)
+            with(binding) {
+                if (group != null) {
+                    addButton.isVisible = true
+                    appBarTitle.text = getString(R.string.group_name, group.name, group.speciality)
+                } else {
+                    addButton.isVisible = false
+                    appBarTitle.text = getString(R.string.add_group_title)
+                }
             }
         }
     }

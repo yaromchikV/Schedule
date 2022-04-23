@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import com.yaromchikv.data.models.entity.BuildingEntity
 import com.yaromchikv.data.models.entity.ClassroomEntity
 import com.yaromchikv.data.models.entity.DayOfWeekEntity
-import com.yaromchikv.data.models.entity.FacultyEntity
 import com.yaromchikv.data.models.entity.GroupEntity
 import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.LessonTypeEntity
@@ -25,7 +24,6 @@ import com.yaromchikv.data.models.views.LessonView
         ClassroomEntity::class,
         DayOfWeekEntity::class,
         TeacherEntity::class,
-        FacultyEntity::class,
         SpecialityEntity::class,
         GroupEntity::class,
         LessonTypeEntity::class,
