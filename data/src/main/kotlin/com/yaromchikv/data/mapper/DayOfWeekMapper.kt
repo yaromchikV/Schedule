@@ -4,13 +4,6 @@ import com.yaromchikv.data.models.entity.DayOfWeekEntity
 import com.yaromchikv.domain.model.DayOfWeekModel
 
 class DayOfWeekMapper {
-    fun mapToDayOfWeekEntity(model: DayOfWeekModel): DayOfWeekEntity {
-        return DayOfWeekEntity(
-            id = model.id,
-            name = model.name
-        )
-    }
-
     fun mapToDayOfWeekModel(entity: DayOfWeekEntity): DayOfWeekModel {
         return DayOfWeekModel(
             id = entity.id,

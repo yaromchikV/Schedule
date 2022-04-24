@@ -52,17 +52,19 @@ class PageFragment : Fragment(R.layout.fragment_page) {
     }
 
     private fun setupBackNextButtons() {
-        when (currentFragmentIndex) {
-            0 -> binding.backButton.isVisible = false
-            6 -> binding.forwardButton.isVisible = false
-        }
+        with(binding) {
+            when (currentFragmentIndex) {
+                0 -> backButton.isVisible = false
+                6 -> forwardButton.isVisible = false
+            }
 
-        binding.backButton.setOnClickListener {
-            scheduleViewModel.prevFragmentClick(currentFragmentIndex)
-        }
+            backButton.setOnClickListener {
+                scheduleViewModel.prevFragmentClick(currentFragmentIndex)
+            }
 
-        binding.forwardButton.setOnClickListener {
-            scheduleViewModel.nextFragmentClick(currentFragmentIndex)
+            forwardButton.setOnClickListener {
+                scheduleViewModel.nextFragmentClick(currentFragmentIndex)
+            }
         }
     }
 
@@ -88,26 +90,24 @@ class PageFragment : Fragment(R.layout.fragment_page) {
 
     private suspend fun observeDaysOfWeek() {
         scheduleViewModel.daysOfWeek.collectLatest {
-            binding.dayOfWeek.text =
-                pageViewModel.getCurrentDayName(it, currentFragmentIndex)
+            binding.dayOfWeek.text = pageViewModel.getCurrentDayName(it, currentFragmentIndex)
         }
     }
 
     private suspend fun observeLessons() {
         pageViewModel.lessonsState.collectLatest {
-            when (it) {
-                is PageViewModel.UiState.Loading -> {
-                    binding.progressBar.isVisible = true
-                }
-                is PageViewModel.UiState.Ready -> {
-                    binding.progressBar.isVisible = false
-                    it.data.let { list ->
-                        binding.noLesson.visibility =
-                            if (list.isEmpty()) View.VISIBLE else View.GONE
-                        scheduleAdapter.submitList(list)
+            with(binding) {
+                when (it) {
+                    is PageViewModel.UiState.Loading -> {
+                        progressBar.isVisible = true
                     }
+                    is PageViewModel.UiState.Ready -> {
+                        progressBar.isVisible = false
+                        noLesson.visibility = if (it.data.isEmpty()) View.VISIBLE else View.GONE
+                        scheduleAdapter.submitList(it.data)
+                    }
+                    else -> Unit
                 }
-                else -> Unit
             }
         }
     }

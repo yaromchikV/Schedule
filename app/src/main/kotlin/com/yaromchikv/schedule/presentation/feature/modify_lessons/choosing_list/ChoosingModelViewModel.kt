@@ -41,8 +41,8 @@ class ChoosingModelViewModel(
     }
 
     sealed class UiState {
-        object Idle: UiState()
-        data class Ready(val data: List<BaseModel?>): UiState()
-        object Loading: UiState()
+        object Idle : UiState()
+        data class Ready(val data: List<BaseModel?>) : UiState()
+        object Loading : UiState()
     }
 }

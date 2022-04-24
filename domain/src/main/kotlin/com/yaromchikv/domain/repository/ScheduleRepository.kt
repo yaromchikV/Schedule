@@ -12,39 +12,43 @@ import com.yaromchikv.domain.model.schedule.ScheduleInterface
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
-    fun getLessons(dayIndex: Int, groupId: Int): Flow<List<LessonModel>>
-    fun getLessonById(id: Int): Flow<LessonModel?>
-    fun getDaysOfWeek(): Flow<List<DayOfWeekModel>>
+
+    fun getLessonsForGroupByDay(dayIndex: Int, groupId: Int): Flow<List<LessonModel>>
     fun getGroups(): Flow<List<GroupModel>>
-    fun getCountOfTeachers(): Flow<Int>
-    fun getTeachers(): Flow<List<TeacherModel>>
-    fun getLessonTypes(): Flow<List<LessonTypeModel>>
-    fun getCountOfClassrooms(): Flow<Int>
-    fun getCountOfSpecialities(): Flow<Int>
-    fun getCountOfGroupByName(name: String): Flow<Int>
-    fun getGroupByName(name: String): Flow<GroupModel>
     fun getClassrooms(): Flow<List<ClassroomModel>>
+    fun getTeachers(): Flow<List<TeacherModel>>
+    fun getDaysOfWeek(): Flow<List<DayOfWeekModel>>
     fun getSpecialities(): Flow<List<SpecialityModel>>
+    fun getLessonTypes(): Flow<List<LessonTypeModel>>
 
-    fun getIdByUsername(username: String): Flow<Int?>
-    fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?>
+    suspend fun getLessonById(id: Int): LessonModel?
+    suspend fun getGroupByName(name: String): GroupModel?
 
+    suspend fun getSpecialityNameById(id: Int): String?
+    suspend fun checkIfGroupExist(name: String): Boolean
+
+    suspend fun getCountOfClassrooms(): Int
+    suspend fun getCountOfTeachers(): Int
+    suspend fun getCountOfSpecialities(): Int
+
+    suspend fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Int?
+    suspend fun getIdByUsername(username: String): Int?
+    suspend fun getRoleByUsernameAndPassword(username: String, password: String): Int?
+
+    suspend fun addGroup(groupModel: GroupModel)
     suspend fun addLesson(lessonModel: LessonModel)
     suspend fun updateLesson(lessonModel: LessonModel)
     suspend fun deleteLesson(lessonModel: LessonModel)
+    suspend fun deleteLessonsByGroupId(id: Int)
+
     suspend fun addTeachersList(list: List<TeacherModel>)
     suspend fun addClassroomList(list: List<ClassroomModel>)
     suspend fun addSpecialityList(list: List<SpecialityModel>)
     suspend fun addLessonList(list: List<LessonModel>)
-    suspend fun addGroup(groupModel: GroupModel)
-    suspend fun deleteLessonByGroupId(id: Int)
 
     suspend fun getTeachersFromApi(): Result<List<TeacherModel>>
     suspend fun getClassroomsFromApi(): Result<List<ClassroomModel>>
     suspend fun getSpecialitiesFromApi(): Result<List<SpecialityModel>>
     suspend fun getScheduleFromApi(groupName: String): Result<ScheduleInterface>
-
-    fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Flow<Int?>
-    fun getSpecialityNameById(id: Int): Flow<String?>
 
 }

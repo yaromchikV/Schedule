@@ -23,12 +23,11 @@ class PageViewModel(
     private val _lessonsState = MutableStateFlow<UiState>(UiState.Idle)
     val lessonsState: StateFlow<UiState> = _lessonsState
 
-    private val preferenceListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == GROUP_ID_PREFS_KEY) {
-                getLessons()
-            }
+    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == GROUP_ID_PREFS_KEY) {
+            getLessons()
         }
+    }
 
     private var getLessonsJob: Job? = null
 
@@ -42,7 +41,7 @@ class PageViewModel(
         val groupId = preferences.getInt(GROUP_ID_PREFS_KEY, DEFAULT_ID)
 
         getLessonsJob?.cancel()
-        getLessonsJob = repository.getLessons(dayIndex + 1, groupId)
+        getLessonsJob = repository.getLessonsForGroupByDay(dayIndex + 1, groupId)
             .onEach { lessons -> _lessonsState.value = UiState.Ready(lessons) }
             .launchIn(viewModelScope)
     }
@@ -59,8 +58,8 @@ class PageViewModel(
     }
 
     sealed class UiState {
-        object Idle: UiState()
-        data class Ready(val data: List<LessonModel?>): UiState()
-        object Loading: UiState()
+        object Idle : UiState()
+        data class Ready(val data: List<LessonModel?>) : UiState()
+        object Loading : UiState()
     }
 }

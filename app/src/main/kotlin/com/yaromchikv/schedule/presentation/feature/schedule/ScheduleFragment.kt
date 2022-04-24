@@ -12,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.FragmentScheduleBinding
 import com.yaromchikv.schedule.presentation.MainViewModel
-import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyLessonViewModel
+import com.yaromchikv.schedule.presentation.common.AccessRights
 import com.yaromchikv.schedule.presentation.feature.modify_lessons.ModifyMode
 import com.yaromchikv.schedule.presentation.feature.viewpager.ViewPagerAdapter
 import java.time.LocalDate
@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
@@ -28,25 +29,25 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private val mainViewModel by sharedViewModel<MainViewModel>()
     private val scheduleViewModel by viewModel<ScheduleViewModel>()
 
-    private val editLessonViewModel by sharedViewModel<ModifyLessonViewModel>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupObservers()
 
-//        when (mainViewModel.accessRights) {
-//            AccessRights.USER -> binding.settingsButton.isVisible = false
-//            AccessRights.ADMIN -> binding.settingsButton.isVisible = true
-//            else -> Unit
-//        }
+        with(binding) {
+            Timber.i(mainViewModel.accessRights.toString())
+            when (mainViewModel.accessRights) {
+                AccessRights.USER -> {
+                    addButton.isVisible = false
+                }
+                AccessRights.ADMIN -> {
+                    addButton.isVisible = true
+                }
+                else -> Unit
+            }
 
-        binding.menuButton.setOnClickListener {
-            scheduleViewModel.changeGroupClick()
-        }
-
-        binding.addButton.setOnClickListener {
-            scheduleViewModel.addLessonClick()
+            menuButton.setOnClickListener { scheduleViewModel.changeGroupClick() }
+            addButton.setOnClickListener { scheduleViewModel.addLessonClick() }
         }
     }
 
@@ -74,7 +75,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
                     appBarTitle.text = getString(R.string.group_name, group.name, group.speciality)
                 } else {
                     addButton.isVisible = false
-                    appBarTitle.text = getString(R.string.add_group_title)
+                    appBarTitle.text = getString(R.string.group_not_selected)
                 }
             }
         }

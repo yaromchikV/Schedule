@@ -11,4 +11,4 @@ data class TeacherDto(
     @Json(name = "firstName") override val name: String,
     @Json(name = "middleName") override val patronymic: String,
     @Json(name = "rank") override val rank: String?
-): TeacherInterface
+) : TeacherInterface

@@ -49,11 +49,11 @@ class ModifyLessonFragment : Fragment(R.layout.fragment_modify_lesson) {
         with(binding) {
             when (ModifyMode.values()[args.mode]) {
                 ModifyMode.EDIT -> {
-                    appBarTitle.text = "Редактирование"
+                    appBarTitle.text = getString(R.string.editing_title)
                     deleteCard.visibility = View.VISIBLE
                 }
                 ModifyMode.ADD -> {
-                    appBarTitle.text = "Добавление"
+                    appBarTitle.text = getString(R.string.adding_title)
                     deleteCard.visibility = View.GONE
                 }
             }
@@ -69,41 +69,25 @@ class ModifyLessonFragment : Fragment(R.layout.fragment_modify_lesson) {
 
     private fun setupClickListeners() {
         with(binding) {
-            backButton.setOnClickListener {
-                findNavController().navigateUp()
-            }
+            backButton.setOnClickListener { findNavController().navigateUp() }
             applyButton.setOnClickListener {
                 generateLessonFromFields()?.let {
                     modifyLessonViewModel.applyChangesClick(it)
                 }
             }
+
+            classroomCard.setOnClickListener { navigateToChoosingList(ListMode.CLASSROOMS) }
+            dayOfWeekCard.setOnClickListener { navigateToChoosingList(ListMode.DAYS_OF_WEEK) }
+            typeCard.setOnClickListener { navigateToChoosingList(ListMode.LESSON_TYPES) }
+            teacherCard.setOnClickListener { navigateToChoosingList(ListMode.TEACHERS) }
+            startTimeCard.setOnClickListener { showTimePicker(startTimeText) }
+            endTimeCard.setOnClickListener { showTimePicker(endTimeText) }
             deleteCard.setOnClickListener {
                 showDeleteAlertDialog {
                     modifyLessonViewModel.deleteButtonClick()
                     findNavController().navigateUp()
                 }
             }
-
-            classroomCard.setOnClickListener {
-                navigateToChoosingList(ListMode.CLASSROOMS)
-            }
-            dayOfWeekCard.setOnClickListener {
-                navigateToChoosingList(ListMode.DAYS_OF_WEEK)
-            }
-            typeCard.setOnClickListener {
-                navigateToChoosingList(ListMode.LESSON_TYPES)
-            }
-            teacherCard.setOnClickListener {
-                navigateToChoosingList(ListMode.TEACHERS)
-            }
-
-            startTimeCard.setOnClickListener {
-                showTimePicker(startTimeText)
-            }
-            endTimeCard.setOnClickListener {
-                showTimePicker(endTimeText)
-            }
-
         }
     }
 

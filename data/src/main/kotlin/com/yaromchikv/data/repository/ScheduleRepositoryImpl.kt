@@ -22,7 +22,6 @@ import com.yaromchikv.domain.model.schedule.ScheduleInterface
 import com.yaromchikv.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
 class ScheduleRepositoryImpl(
     private val api: ScheduleApi,
@@ -36,72 +35,86 @@ class ScheduleRepositoryImpl(
     private val specialityMapper: SpecialityMapper
 ) : ScheduleRepository {
 
-    override fun getLessons(dayIndex: Int, groupId: Int): Flow<List<LessonModel>> {
-        val dataFlow = dao.getLessonsByDay(dayIndex, groupId)
-        return dataFlow.map {
-            Timber.i(it.toString())
-            lessonMapper.mapToLessonModelList(it)
-        }
-    }
-
-    override fun getLessonById(id: Int): Flow<LessonModel?> {
-        val dataFlow = dao.getLessonById(id)
-        return dataFlow.map {
-            if (it != null) {
-                lessonMapper.mapToLessonModel(it)
-            } else null
-        }
-    }
-
-    override fun getDaysOfWeek(): Flow<List<DayOfWeekModel>> {
-        val dataFlow = dao.getDaysOfWeek()
-        return dataFlow.map { dayOfWeekMapper.mapToDayOfWeekModelList(it) }
+    override fun getLessonsForGroupByDay(dayIndex: Int, groupId: Int): Flow<List<LessonModel>> {
+        val lessonViewsFlow = dao.getLessonsForGroupByDay(dayIndex, groupId)
+        return lessonViewsFlow.map { lessonMapper.mapToLessonModelList(it) }
     }
 
     override fun getGroups(): Flow<List<GroupModel>> {
-        val dataFlow = dao.getGroups()
-        return dataFlow.map { groupMapper.mapFromGroupModelList(it) }
-    }
-
-    override fun getCountOfTeachers(): Flow<Int> {
-        return dao.getCountOfTeachers()
-    }
-
-    override fun getTeachers(): Flow<List<TeacherModel>> {
-        val dataFlow = dao.getTeachers()
-        return dataFlow.map { teacherMapper.mapToTeacherModelList(it) }
-    }
-
-    override fun getLessonTypes(): Flow<List<LessonTypeModel>> {
-        val dataFlow = dao.getLessonTypes()
-        return dataFlow.map { lessonTypeMapper.mapToLessonTypeModelList(it) }
-    }
-
-    override fun getCountOfClassrooms(): Flow<Int> {
-        return dao.getCountOfClassrooms()
-    }
-
-    override fun getCountOfSpecialities(): Flow<Int> {
-        return dao.getCountOfSpecialities()
-    }
-
-    override fun getCountOfGroupByName(name: String): Flow<Int> {
-        return dao.getCountOfGroupsByName(name)
-    }
-
-    override fun getGroupByName(name: String): Flow<GroupModel> {
-        val groupView = dao.getGroupByName(name)
-        return groupView.map { groupMapper.mapToGroupModel(it) }
+        val groupViewsFlow = dao.getGroups()
+        return groupViewsFlow.map { groupMapper.mapFromGroupModelList(it) }
     }
 
     override fun getClassrooms(): Flow<List<ClassroomModel>> {
-        val dataFlow = dao.getClassrooms()
-        return dataFlow.map { classroomMapper.mapToClassroomModelList(it) }
+        val classroomViewsFlow = dao.getClassrooms()
+        return classroomViewsFlow.map { classroomMapper.mapToClassroomModelList(it) }
+    }
+
+    override fun getTeachers(): Flow<List<TeacherModel>> {
+        val teachersFlow = dao.getTeachers()
+        return teachersFlow.map { teacherMapper.mapToTeacherModelList(it) }
+    }
+
+    override fun getDaysOfWeek(): Flow<List<DayOfWeekModel>> {
+        val daysOfWeekFlow = dao.getDaysOfWeek()
+        return daysOfWeekFlow.map { dayOfWeekMapper.mapToDayOfWeekModelList(it) }
     }
 
     override fun getSpecialities(): Flow<List<SpecialityModel>> {
-        val dataFlow = dao.getSpecialities()
-        return dataFlow.map { specialityMapper.mapToSpecialityModelList(it) }
+        val specialitiesFlow = dao.getSpecialities()
+        return specialitiesFlow.map { specialityMapper.mapToSpecialityModelList(it) }
+    }
+
+    override fun getLessonTypes(): Flow<List<LessonTypeModel>> {
+        val lessonTypesFlow = dao.getLessonTypes()
+        return lessonTypesFlow.map { lessonTypeMapper.mapToLessonTypeModelList(it) }
+    }
+
+    override suspend fun getLessonById(id: Int): LessonModel? {
+        val lessonView = dao.getLessonById(id)
+        return lessonView?.let { lessonMapper.mapToLessonModel(it) }
+    }
+
+    override suspend fun getGroupByName(name: String): GroupModel? {
+        val groupView = dao.getGroupByName(name)
+        return groupView?.let { groupMapper.mapToGroupModel(it) }
+    }
+
+    override suspend fun getSpecialityNameById(id: Int): String? {
+        return dao.getSpecialityNameById(id)
+    }
+
+    override suspend fun checkIfGroupExist(name: String): Boolean {
+        return dao.checkIfGroupExist(name)
+    }
+
+    override suspend fun getCountOfClassrooms(): Int {
+        return dao.getCountOfClassrooms()
+    }
+
+    override suspend fun getCountOfTeachers(): Int {
+        return dao.getCountOfTeachers()
+    }
+
+    override suspend fun getCountOfSpecialities(): Int {
+        return dao.getCountOfSpecialities()
+    }
+
+    override suspend fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Int? {
+        return dao.getClassroomIdByNameAndBuildingId(name, buildingId)
+    }
+
+    override suspend fun getIdByUsername(username: String): Int? {
+        return dao.getIdByUsername(username)
+    }
+
+    override suspend fun getRoleByUsernameAndPassword(username: String, password: String): Int? {
+        return dao.getRoleByUsernameAndPassword(username, password)
+    }
+
+    override suspend fun addGroup(groupModel: GroupModel) {
+        val groupEntity = groupMapper.mapToGroupEntity(groupModel)
+        dao.addGroup(groupEntity)
     }
 
     override suspend fun addLesson(lessonModel: LessonModel) {
@@ -117,6 +130,10 @@ class ScheduleRepositoryImpl(
     override suspend fun deleteLesson(lessonModel: LessonModel) {
         val lessonEntity = lessonMapper.mapToLessonEntity(lessonModel)
         dao.deleteLesson(lessonEntity)
+    }
+
+    override suspend fun deleteLessonsByGroupId(id: Int) {
+        dao.deleteLessonsByGroupId(id)
     }
 
     override suspend fun addTeachersList(list: List<TeacherModel>) {
@@ -150,23 +167,6 @@ class ScheduleRepositoryImpl(
     override suspend fun addLessonList(list: List<LessonModel>) {
         val entities = lessonMapper.mapToLessonEntityList(list)
         dao.insertListOfLessons(entities)
-    }
-
-    override suspend fun addGroup(groupModel: GroupModel) {
-        val groupEntity = groupMapper.mapToGroupEntity(groupModel)
-        dao.addGroup(groupEntity)
-    }
-
-    override suspend fun deleteLessonByGroupId(id: Int) {
-        dao.deleteLessonByGroupId(id)
-    }
-
-    override fun getIdByUsername(username: String): Flow<Int?> {
-        return dao.getUsernameId(username)
-    }
-
-    override fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?> {
-        return dao.getRoleByUsernameAndPassword(username, password)
     }
 
     override suspend fun getTeachersFromApi(): Result<List<TeacherModel>> {
@@ -221,18 +221,10 @@ class ScheduleRepositoryImpl(
             if (response.isSuccessful && body != null) {
                 Result.Success(body)
             } else {
-                Result.Error(response.message())
+                Result.Error("Группа не найдена")
             }
         } catch (e: Exception) {
             Result.Error("Ошибка подключения")
         }
-    }
-
-    override fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Flow<Int?> {
-        return dao.getClassroomIdByNameAndBuildingId(name, buildingId)
-    }
-
-    override fun getSpecialityNameById(id: Int): Flow<String?> {
-        return dao.getSpecialityNameById(id)
     }
 }

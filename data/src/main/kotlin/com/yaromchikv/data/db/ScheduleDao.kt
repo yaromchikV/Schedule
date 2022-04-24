@@ -25,40 +25,19 @@ import kotlinx.coroutines.flow.Flow
 interface ScheduleDao {
 
     @Query("SELECT * FROM LessonView WHERE day_id = :dayIndex AND group_id = :groupId ORDER BY start_time, subgroup")
-    fun getLessonsByDay(dayIndex: Int, groupId: Int): Flow<List<LessonView>>
-
-    @Query("SELECT * FROM LessonView WHERE id = :id")
-    fun getLessonById(id: Int): Flow<LessonView?>
+    fun getLessonsForGroupByDay(dayIndex: Int, groupId: Int): Flow<List<LessonView>>
 
     @Query("SELECT * FROM GroupView ORDER BY name")
     fun getGroups(): Flow<List<GroupView>>
 
-    @Query("SELECT * FROM days")
-    fun getDaysOfWeek(): Flow<List<DayOfWeekEntity>>
-
-    @Query("SELECT COUNT(*) FROM teachers")
-    fun getCountOfTeachers(): Flow<Int>
-
-    @Query("SELECT COUNT(*) FROM specialities")
-    fun getCountOfSpecialities(): Flow<Int>
-
-    @Query("SELECT * FROM specialities WHERE id == :id LIMIT 1")
-    fun getSpecialityById(id: Int): Flow<SpecialityEntity>
-
-    @Query("SELECT * FROM GroupView WHERE name = :name LIMIT 1")
-    fun getGroupByName(name: String): Flow<GroupView>
+    @Query("SELECT * FROM ClassroomView ORDER BY building_id, number ASC")
+    fun getClassrooms(): Flow<List<ClassroomView>>
 
     @Query("SELECT * FROM teachers ORDER BY surname, name, patronymic, rank ASC")
     fun getTeachers(): Flow<List<TeacherEntity>>
 
-    @Query("SELECT COUNT(*) FROM classrooms")
-    fun getCountOfClassrooms(): Flow<Int>
-
-    @Query("SELECT COUNT(*) FROM groups WHERE name = :name")
-    fun getCountOfGroupsByName(name: String): Flow<Int>
-
-    @Query("SELECT * FROM ClassroomView ORDER BY building_id, number ASC")
-    fun getClassrooms(): Flow<List<ClassroomView>>
+    @Query("SELECT * FROM days")
+    fun getDaysOfWeek(): Flow<List<DayOfWeekEntity>>
 
     @Query("SELECT * FROM specialities")
     fun getSpecialities(): Flow<List<SpecialityEntity>>
@@ -66,22 +45,47 @@ interface ScheduleDao {
     @Query("SELECT * FROM lesson_types")
     fun getLessonTypes(): Flow<List<LessonTypeEntity>>
 
-    @Query("SELECT id FROM classrooms WHERE number = :name AND building_id = :buildingId")
-    fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Flow<Int?>
+
+    @Query("SELECT * FROM LessonView WHERE id = :id")
+    suspend fun getLessonById(id: Int): LessonView?
+
+    @Query("SELECT * FROM GroupView WHERE name = :name")
+    suspend fun getGroupByName(name: String): GroupView?
+
 
     @Query("SELECT name FROM specialities WHERE id = :id")
-    fun getSpecialityNameById(id: Int): Flow<String?>
+    suspend fun getSpecialityNameById(id: Int): String?
+
+    @Query("SELECT COUNT(*) FROM groups WHERE name = :name")
+    suspend fun checkIfGroupExist(name: String): Boolean
+
+
+    @Query("SELECT COUNT(*) FROM classrooms")
+    suspend fun getCountOfClassrooms(): Int
+
+    @Query("SELECT COUNT(*) FROM teachers")
+    suspend fun getCountOfTeachers(): Int
+
+    @Query("SELECT COUNT(*) FROM specialities")
+    suspend fun getCountOfSpecialities(): Int
+
+
+    @Query("SELECT id FROM classrooms WHERE number = :name AND building_id = :buildingId")
+    suspend fun getClassroomIdByNameAndBuildingId(name: String, buildingId: Int): Int?
 
     @Query("SELECT id FROM users WHERE username = :username")
-    fun getUsernameId(username: String): Flow<Int?>
+    suspend fun getIdByUsername(username: String): Int?
 
     @Query(
-        "SELECT roles.role " +
-                "FROM users " +
+        "SELECT roles.role FROM users " +
                 "JOIN roles ON roles.id = users.role_id " +
                 "WHERE username = :username AND password = :password"
     )
-    fun getRoleByUsernameAndPassword(username: String, password: String): Flow<Int?>
+    suspend fun getRoleByUsernameAndPassword(username: String, password: String): Int?
+
+
+    @Insert
+    suspend fun addGroup(groupEntity: GroupEntity)
 
     @Insert
     suspend fun addLesson(lessonEntity: LessonEntity)
@@ -92,14 +96,9 @@ interface ScheduleDao {
     @Delete
     suspend fun deleteLesson(lessonEntity: LessonEntity)
 
-    @Insert
-    suspend fun addTeacher(teacherEntity: TeacherEntity)
-
-    @Insert
-    suspend fun addGroup(groupEntity: GroupEntity)
-
     @Query("DELETE FROM lessons WHERE group_id = :id")
-    suspend fun deleteLessonByGroupId(id: Int)
+    suspend fun deleteLessonsByGroupId(id: Int)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfRoles(list: List<RoleEntity>)
@@ -111,22 +110,19 @@ interface ScheduleDao {
     suspend fun insertListOfDaysOfWeek(list: List<DayOfWeekEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListOfBuildings(list: List<BuildingEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListOfClassrooms(list: List<ClassroomEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListOfSpecialities(list: List<SpecialityEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListOfGroups(list: List<GroupEntity>)
+    suspend fun insertListOfLessonTypes(list: List<LessonTypeEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfTeachers(list: List<TeacherEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListOfLessonTypes(list: List<LessonTypeEntity>)
+    suspend fun insertListOfClassrooms(list: List<ClassroomEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertListOfBuildings(list: List<BuildingEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertListOfSpecialities(list: List<SpecialityEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListOfLessons(list: List<LessonEntity>)

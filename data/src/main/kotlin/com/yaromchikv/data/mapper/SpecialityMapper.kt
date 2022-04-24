@@ -1,11 +1,8 @@
 package com.yaromchikv.data.mapper
 
 import com.yaromchikv.data.models.dto.SpecialityDto
-import com.yaromchikv.data.models.dto.TeacherDto
 import com.yaromchikv.data.models.entity.SpecialityEntity
-import com.yaromchikv.data.models.entity.TeacherEntity
 import com.yaromchikv.domain.model.SpecialityModel
-import com.yaromchikv.domain.model.TeacherModel
 
 class SpecialityMapper {
     fun mapToSpecialityEntity(model: SpecialityModel): SpecialityEntity {

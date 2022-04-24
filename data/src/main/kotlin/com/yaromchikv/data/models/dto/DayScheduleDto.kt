@@ -9,4 +9,4 @@ import com.yaromchikv.domain.model.schedule.DayScheduleInterface
 data class DayScheduleDto(
     @Json(name = "weekDay") override val weekDay: String,
     @Json(name = "schedule") override val listOfLessons: List<LessonDto>
-): DayScheduleInterface
+) : DayScheduleInterface

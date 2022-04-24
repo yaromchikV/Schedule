@@ -31,10 +31,6 @@ class MainViewModel(
 
     private var getGroupsJob: Job? = null
 
-    private var fetchTeachersJob: Job? = null
-    private var fetchClassroomsJob: Job? = null
-    private var fetchSpecialitiesJob: Job? = null
-
     init {
         fetchTeachers()
         fetchClassrooms()
@@ -43,55 +39,45 @@ class MainViewModel(
     }
 
     private fun fetchTeachers() {
-        fetchTeachersJob?.cancel()
-        fetchTeachersJob = repository.getCountOfTeachers()
-            .onEach { count ->
-                if (count == 0) {
-                    when (val teachers = repository.getTeachersFromApi()) {
-                        is Result.Success -> {
-                            teachers.data?.let { repository.addTeachersList(it) }
-                        }
-                        is Result.Error -> Unit
+        viewModelScope.launch {
+            val count = repository.getCountOfTeachers()
+            if (count == 0) {
+                when (val teachers = repository.getTeachersFromApi()) {
+                    is Result.Success -> {
+                        teachers.data?.let { repository.addTeachersList(it) }
                     }
+                    is Result.Error -> Unit
                 }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     private fun fetchClassrooms() {
-        fetchClassroomsJob?.cancel()
-        fetchClassroomsJob = repository.getCountOfClassrooms()
-            .onEach { count ->
-                if (count == 0) {
-                    when (val classrooms = repository.getClassroomsFromApi()) {
-                        is Result.Success -> {
-                            classrooms.data?.let { classroomsList ->
-                                repository.addClassroomList(classroomsList)
-                            }
-                        }
-                        is Result.Error -> Unit
+        viewModelScope.launch {
+            val count = repository.getCountOfClassrooms()
+            if (count == 0) {
+                when (val classrooms = repository.getClassroomsFromApi()) {
+                    is Result.Success -> {
+                        classrooms.data?.let { repository.addClassroomList(it) }
                     }
+                    is Result.Error -> Unit
                 }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     private fun fetchSpecialities() {
-        fetchSpecialitiesJob?.cancel()
-        fetchSpecialitiesJob = repository.getCountOfSpecialities()
-            .onEach { count ->
-                if (count == 0) {
-                    when (val specialities = repository.getSpecialitiesFromApi()) {
-                        is Result.Success -> {
-                            specialities.data?.let { specialitiesList ->
-                                repository.addSpecialityList(specialitiesList)
-                            }
-                        }
-                        is Result.Error -> Unit
+        viewModelScope.launch {
+            val count = repository.getCountOfSpecialities()
+            if (count == 0) {
+                when (val specialities = repository.getSpecialitiesFromApi()) {
+                    is Result.Success -> {
+                        specialities.data?.let { repository.addSpecialityList(it) }
                     }
+                    is Result.Error -> Unit
                 }
             }
-            .launchIn(viewModelScope)
+        }
     }
 
     private fun getGroups() {

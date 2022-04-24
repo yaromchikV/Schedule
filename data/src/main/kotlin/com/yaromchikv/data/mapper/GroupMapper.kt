@@ -1,6 +1,5 @@
 package com.yaromchikv.data.mapper
 
-import com.yaromchikv.data.models.dto.GroupDto
 import com.yaromchikv.data.models.entity.GroupEntity
 import com.yaromchikv.data.models.views.GroupView
 import com.yaromchikv.domain.model.GroupModel
@@ -20,14 +19,6 @@ class GroupMapper {
             name = entity.name,
             specialityId = entity.specialityId,
             speciality = entity.speciality
-        )
-    }
-
-    fun mapToGroupEntityFromDto(dto: GroupDto): GroupEntity {
-        return GroupEntity(
-            id = dto.id,
-            name = dto.name,
-            specialityId = dto.specialityId
         )
     }
 

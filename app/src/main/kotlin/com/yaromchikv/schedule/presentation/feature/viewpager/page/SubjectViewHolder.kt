@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.schedule.R
 import com.yaromchikv.schedule.databinding.ItemLessonBinding
+import com.yaromchikv.schedule.presentation.common.TYPE_LAB
+import com.yaromchikv.schedule.presentation.common.TYPE_LECTURE
+import com.yaromchikv.schedule.presentation.common.TYPE_PRACTICAL
 
 class SubjectViewHolder(private val binding: ItemLessonBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -21,9 +24,9 @@ class SubjectViewHolder(private val binding: ItemLessonBinding) :
 
             divider.setBackgroundResource(
                 when (lesson.type) {
-                    "ЛР" -> R.color.red
-                    "ПЗ" -> R.color.yellow
-                    "ЛК" -> R.color.green
+                    TYPE_LAB -> R.color.red
+                    TYPE_PRACTICAL -> R.color.yellow
+                    TYPE_LECTURE -> R.color.green
                     else -> R.color.black
                 }
             )

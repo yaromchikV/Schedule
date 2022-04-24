@@ -9,13 +9,10 @@ import com.yaromchikv.domain.model.LessonTypeModel
 import com.yaromchikv.domain.model.TeacherModel
 import com.yaromchikv.domain.repository.ScheduleRepository
 import com.yaromchikv.schedule.presentation.common.NULL_ID
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ModifyLessonViewModel(
@@ -30,13 +27,10 @@ class ModifyLessonViewModel(
     private val _applySuccessfully = MutableSharedFlow<Boolean>()
     val applySuccessfully: SharedFlow<Boolean> = _applySuccessfully
 
-    private var getLessonJob: Job? = null
-
     private fun getLesson() {
-        getLessonJob?.cancel()
-        getLessonJob = repository.getLessonById(lessonId)
-            .onEach { lesson -> _lesson.value = lesson }
-            .launchIn(viewModelScope)
+        viewModelScope.launch {
+            _lesson.value = repository.getLessonById(lessonId)
+        }
     }
 
     fun updateLesson(lessonModel: LessonModel) {
@@ -45,8 +39,9 @@ class ModifyLessonViewModel(
 
     fun applyChangesClick(lessonModel: LessonModel) {
         viewModelScope.launch {
-            val isCorrect =
-                lessonModel.subject.isNotBlank() && lessonModel.startTime.isNotBlank() && lessonModel.endTime.isNotBlank() && lessonModel.typeId != null && lessonModel.dayOfWeekId != null && lessonModel.weeks.isNotEmpty()
+            val isCorrect = lessonModel.subject.isNotBlank() && lessonModel.startTime.isNotBlank()
+                    && lessonModel.endTime.isNotBlank() && lessonModel.typeId != null
+                    && lessonModel.dayOfWeekId != null && lessonModel.weeks.isNotEmpty()
             if (isCorrect) {
                 if (lessonId == NULL_ID) {
                     repository.addLesson(lessonModel)
@@ -58,11 +53,10 @@ class ModifyLessonViewModel(
         }
     }
 
-    fun deleteButtonClick() {
-        viewModelScope.launch {
-            _lesson.value?.let { repository.deleteLesson(it) }
-        }
+    fun deleteButtonClick() = viewModelScope.launch {
+        _lesson.value?.let { repository.deleteLesson(it) }
     }
+
 
     fun setLessonId(id: Int) {
         lessonId = id

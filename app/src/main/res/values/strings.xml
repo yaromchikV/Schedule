@@ -52,7 +52,12 @@
     <string name="name">Имя</string>
     <string name="patronymic">Отчество</string>
     <string name="rank">Ученое звание</string>
-    <string name="add_group_title">← Добавьте группу</string>
+    <string name="group_not_selected">Выберите группу</string>
     <string name="input_group_number">Введите номер группы</string>
+    <string name="empty_groups_list">Нет добавленных расписаний</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="add_schedule_dialog_title">Добавить расписание</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
 
 </resources>

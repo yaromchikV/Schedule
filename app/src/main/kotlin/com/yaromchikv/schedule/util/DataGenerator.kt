@@ -1,17 +1,16 @@
 package com.yaromchikv.schedule.util
 
 import com.yaromchikv.data.models.entity.DayOfWeekEntity
-import com.yaromchikv.data.models.entity.GroupEntity
-import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.entity.LessonTypeEntity
 import com.yaromchikv.data.models.entity.RoleEntity
-import com.yaromchikv.data.models.entity.SpecialityEntity
 import com.yaromchikv.data.models.entity.UserEntity
 import com.yaromchikv.domain.usecase.GetHashPasswordUseCase
+import com.yaromchikv.schedule.presentation.common.TYPE_LAB
+import com.yaromchikv.schedule.presentation.common.TYPE_LECTURE
+import com.yaromchikv.schedule.presentation.common.TYPE_PRACTICAL
 
 class DataGenerator {
     companion object {
-
         fun generateRoles(): List<RoleEntity> {
             val list = mutableListOf<RoleEntity>()
             list.add(RoleEntity(name = "Пользователь", role = 0))
@@ -54,9 +53,9 @@ class DataGenerator {
 
         fun generateLessonTypes(): List<LessonTypeEntity> {
             val list = mutableListOf<LessonTypeEntity>()
-            list.add(LessonTypeEntity(type = "ЛК"))
-            list.add(LessonTypeEntity(type = "ПЗ"))
-            list.add(LessonTypeEntity(type = "ЛР"))
+            list.add(LessonTypeEntity(type = TYPE_LECTURE))
+            list.add(LessonTypeEntity(type = TYPE_PRACTICAL))
+            list.add(LessonTypeEntity(type = TYPE_LAB))
             return list
         }
     }

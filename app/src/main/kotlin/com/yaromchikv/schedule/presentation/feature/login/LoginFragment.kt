@@ -39,7 +39,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loginViewModel.username = text.toString()
                 usernameTextField.error = null
             }
-
             passwordEditText.doAfterTextChanged { text ->
                 loginViewModel.password = text.toString()
                 passwordTextField.error = null
@@ -50,22 +49,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun setupButtonClickListener() {
         with(binding) {
             loginButton.setOnClickListener {
-                loginViewModel.username = "admin"
-                loginViewModel.password = "admin"
-                loginViewModel.getAccessPermission()
-
-//                if (usernameEditText.text?.isBlank() == true) {
-//                    usernameTextField.error = getString(R.string.input_login)
-//                }
-//                if (passwordEditText.text?.isBlank() == true) {
-//                    passwordTextField.error = getString(R.string.input_password)
-//                }
-//
-//                if (usernameEditText.text?.isNotBlank() == true &&
-//                    passwordEditText.text?.isNotBlank() == true
-//                ) {
-//                    loginViewModel.getAccessPermission()
-//                }
+                if (usernameEditText.text?.isBlank() == true) {
+                    usernameTextField.error = getString(R.string.input_login)
+                }
+                if (passwordEditText.text?.isBlank() == true) {
+                    passwordTextField.error = getString(R.string.input_password)
+                }
+                if (usernameEditText.text?.isNotBlank() == true &&
+                    passwordEditText.text?.isNotBlank() == true
+                ) {
+                    loginViewModel.getAccessPermission()
+                }
             }
         }
     }
@@ -74,25 +68,27 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.accessState.collectLatest { rights ->
-                    when (rights) {
-                        is LoginViewModel.AccessState.Loading -> {
-                            binding.progressBar.isVisible = true
+                    with(binding) {
+                        when (rights) {
+                            is LoginViewModel.AccessState.Loading -> {
+                                progressBar.isVisible = true
+                            }
+                            is LoginViewModel.AccessState.Granted -> {
+                                progressBar.isVisible = false
+                                mainViewModel.accessRights = rights.accessRights
+                                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToScheduleFragment())
+                            }
+                            is LoginViewModel.AccessState.Denied -> {
+                                progressBar.isVisible = false
+                                passwordTextField.editText?.setText("")
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.user_not_found),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            else -> Unit
                         }
-                        is LoginViewModel.AccessState.Granted -> {
-                            binding.progressBar.isVisible = false
-                            mainViewModel.accessRights = rights.accessRights
-                            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToScheduleFragment())
-                        }
-                        is LoginViewModel.AccessState.Denied -> {
-                            binding.progressBar.isVisible = false
-                            binding.passwordTextField.editText?.setText("")
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.user_not_found),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                        else -> Unit
                     }
                 }
             }

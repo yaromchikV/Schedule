@@ -41,6 +41,12 @@ class ClassroomMapper {
     }
 
     fun mapToClassroomModelListFromDto(list: List<ClassroomDto>): List<ClassroomModel> {
-        return list.map { mapToClassroomModelFromDto(it) }
+        val resultList = mutableListOf<ClassroomModel>()
+        list.forEach {
+            if (it.name[0].isDigit() && it.building.name[0].isDigit()) {
+                resultList.add(mapToClassroomModelFromDto(it))
+            }
+        }
+        return resultList
     }
 }

@@ -1,6 +1,5 @@
 package com.yaromchikv.data.mapper
 
-import com.yaromchikv.data.models.dto.ScheduleDto
 import com.yaromchikv.data.models.entity.LessonEntity
 import com.yaromchikv.data.models.views.LessonView
 import com.yaromchikv.domain.model.LessonModel
@@ -43,36 +42,6 @@ class LessonMapper {
             groupId = entity.groupId
         )
     }
-
-    /*
-    val id: Int? = null,
-    val subject: String = "",
-    val typeId: Int? = null,
-    val type: String? = null,
-    val note: String? = null,
-    val startTime: String = "",
-    val endTime: String = "",
-    val dayOfWeekId: Int? = null,
-    val dayOfWeek: String? = null,
-    val weeks: List<Int> = emptyList(),
-    val subgroup: Int = 0,
-    val teacherId: Int? = null,
-    val teacher: String? = null,
-    val classroomId: Int? = null,
-    val classroom: String? = null,
-    val groupId: Int? = null
-     */
-
-//    fun mapToLessonListFromDto(dto: ScheduleDto): List<LessonModel> {
-//        val result = mutableListOf<LessonModel>()
-//        val groupId = dto.studentGroup?.id
-//        dto.listOfDaySchedules.forEach {
-//            it.weekDay
-//        }
-//
-//
-//        return result
-//    }
 
     fun mapToLessonEntityList(list: List<LessonModel>): List<LessonEntity> {
         return list.map { mapToLessonEntity(it) }

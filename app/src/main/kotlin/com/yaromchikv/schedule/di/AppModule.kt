@@ -19,35 +19,19 @@ val appModule = module {
     factory<SharedPreferences> { PreferenceManager.getDefaultSharedPreferences(get()) }
 
     viewModel { MainViewModel(preferences = get(), repository = get()) }
-
     viewModel { LoginViewModel(repository = get(), getAccessPermissionUseCase = get()) }
-
     viewModel { ScheduleViewModel(repository = get()) }
-
-    viewModel { ChangeGroupViewModel(repository = get()) }
-
+    viewModel { ChangeGroupViewModel(repository = get(), addScheduleUseCase = get()) }
     viewModel { parameters ->
-        PageViewModel(
-            dayIndex = parameters.get(),
-            repository = get(),
-            preferences = get()
-        )
+        PageViewModel(dayIndex = parameters.get(), repository = get(), preferences = get())
     }
-
     viewModel {
-        ModifyLessonViewModel(
-            repository = get()
-        )
+        ModifyLessonViewModel(repository = get())
     }
-
     viewModel { parameters ->
-        ChoosingModelViewModel(
-            listMode = parameters.get(),
-            repository = get()
-        )
+        ChoosingModelViewModel(listMode = parameters.get(), repository = get())
     }
 
     factory { ScheduleAdapter() }
     factory { ChoosingModelAdapter() }
-
 }

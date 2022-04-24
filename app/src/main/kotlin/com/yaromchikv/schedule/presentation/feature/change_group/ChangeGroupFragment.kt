@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
@@ -58,15 +58,56 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupObservers()
+        setupList()
 
-        binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
+        with(binding) {
+            backButton.setOnClickListener { findNavController().navigateUp() }
+            addButton.setOnClickListener { showAddGroupDialog() }
         }
+    }
 
-        binding.addButton.setOnClickListener {
-            showAddGroupDialog()
+    private fun setupObservers() = lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch { observeGroupState() }
+            launch { observeGroups() }
         }
+    }
 
+    private suspend fun observeGroups() {
+        mainViewModel.groups.collectLatest {
+            binding.noGroups.visibility =
+                if (it == null || it.isEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private suspend fun observeGroupState() {
+        changeGroupViewModel.addGroupState.collectLatest {
+            with(binding) {
+                when (it) {
+                    is ChangeGroupViewModel.UiState.Loading -> {
+                        noGroups.isVisible = false
+                        progressBar.isVisible = true
+                    }
+                    is ChangeGroupViewModel.UiState.Ready -> {
+                        progressBar.isVisible = false
+                    }
+                    is ChangeGroupViewModel.UiState.Error -> {
+                        noGroups.isVisible = true
+                        progressBar.isVisible = false
+                        Toast.makeText(
+                            requireContext(),
+                            it.message ?: getString(R.string.unknown_error),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun setupList() {
         binding.composeList.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -77,30 +118,6 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
                             mainViewModel.selectGroupClick(group)
                             findNavController().navigateUp()
                         }
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                changeGroupViewModel.addGroupState.collectLatest {
-                    when (it) {
-                        is ChangeGroupViewModel.UiState.Loading -> {
-                            binding.progressBar.isVisible = true
-                        }
-                        is ChangeGroupViewModel.UiState.Ready -> {
-                            binding.progressBar.isVisible = false
-                        }
-                        is ChangeGroupViewModel.UiState.Error -> {
-                            binding.progressBar.isVisible = false
-                            Toast.makeText(
-                                requireContext(),
-                                it.message ?: "Unknown error",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                        else -> Unit
                     }
                 }
             }
@@ -140,8 +157,7 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
                 ) {
                     Row() {
                         Text(
-                            modifier = Modifier.wrapContentHeight().wrapContentWidth()
-                                .padding(16.dp),
+                            modifier = Modifier.wrapContentSize().padding(16.dp),
                             color = Color.Black,
                             text = getString(R.string.group_name, group.name, group.speciality),
                             fontSize = 18.sp
@@ -170,12 +186,12 @@ class ChangeGroupFragment : Fragment(R.layout.fragment_change_group) {
     private fun showAddGroupDialog() {
         val dialogBinding = DialogAddGroupBinding.inflate(layoutInflater)
         AlertDialog.Builder(requireContext())
-            .setTitle("Добавить расписание")
+            .setTitle(getString(R.string.add_schedule_dialog_title))
             .setView(dialogBinding.root)
-            .setPositiveButton("Добавить") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 changeGroupViewModel.addGroupClick(dialogBinding.groupEditText.text.toString())
             }
-            .setNegativeButton("Отмена") { _, _ -> }
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .create()
             .show()
     }
