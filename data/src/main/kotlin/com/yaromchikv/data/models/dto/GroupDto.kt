@@ -2,7 +2,7 @@ package com.yaromchikv.data.models.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.yaromchikv.domain.model.schedule.GroupInterface
+import com.yaromchikv.domain.model.GroupInterface
 
 @JsonClass(generateAdapter = true)
 data class GroupDto(

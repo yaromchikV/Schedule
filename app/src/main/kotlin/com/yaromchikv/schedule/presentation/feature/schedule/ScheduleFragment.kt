@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
@@ -35,16 +34,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
         setupObservers()
 
         with(binding) {
-            Timber.i(mainViewModel.accessRights.toString())
-            when (mainViewModel.accessRights) {
-                AccessRights.USER -> {
-                    addButton.isVisible = false
-                }
-                AccessRights.ADMIN -> {
-                    addButton.isVisible = true
-                }
-                else -> Unit
-            }
+            addButton.isVisible = mainViewModel.accessRights != AccessRights.ADMIN
 
             menuButton.setOnClickListener { scheduleViewModel.changeGroupClick() }
             addButton.setOnClickListener { scheduleViewModel.addLessonClick() }

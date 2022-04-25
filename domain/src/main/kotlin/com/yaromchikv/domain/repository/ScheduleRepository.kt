@@ -8,7 +8,7 @@ import com.yaromchikv.domain.model.LessonModel
 import com.yaromchikv.domain.model.LessonTypeModel
 import com.yaromchikv.domain.model.SpecialityModel
 import com.yaromchikv.domain.model.TeacherModel
-import com.yaromchikv.domain.model.schedule.ScheduleInterface
+import com.yaromchikv.domain.model.ScheduleInterface
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {

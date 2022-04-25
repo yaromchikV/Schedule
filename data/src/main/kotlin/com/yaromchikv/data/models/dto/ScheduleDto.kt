@@ -1,9 +1,8 @@
 package com.yaromchikv.data.models.dto
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.yaromchikv.domain.model.schedule.ScheduleInterface
+import com.yaromchikv.domain.model.ScheduleInterface
 
 @JsonClass(generateAdapter = true)
 data class ScheduleDto(
